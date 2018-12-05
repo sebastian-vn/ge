@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Inicio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="css/fileinput.min.css">
+  <link rel="stylesheet" href="css/fileinput-rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="css/fullcalendar.min.css">
+  <link rel="stylesheet" href="css/newStyle.css">
+</head>
+
+<body>
+
+  <main>
+    <!-- NAVBAR PART -->
+    <ul class="nav justify-content-end" id="navGE">
+      <li class="nav-item imgsNav">
+        <img src="img/logo-min.png" alt="" class="navImg">
+        <img src="img/Universidad-de-manizales.png" alt="" class="navImg">
+      </li>
+
+      <li class="nav-item">
+        <h3 id="userName"></h3>
+      </li>
+
+      <li class="nav-item">
+        <div class="imgProfile">
+          <img class="" src="img/ic4qgE7.png" alt="">
+          <div class="profileDropdown">
+          </div>
+        </div>
+        <a class="nav-link" href="iniciarSesion.html"><i class="fas fa-home"></i></a>
+        <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>
+      </li>
+    </ul>
+
+    <div class="content">
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4" id="leftPortion">
+
+          <div id="homeBreadCrumbs" class="animated showNone">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+              </ol>
+            </nav>
+            <a id="returnMunicipio" class="returnBtn showNone" class="btn btn-success" onClick="returnMunicipio(this)">
+              <i class="fas fa-arrow-circle-left arrow"></i>
+            </a>
+            <a id="returnFocalizacion" class="returnBtn showNone" class="btn btn-success" onClick="returnFocalizacion(this)">
+                <i class="fas fa-arrow-circle-left arrow"></i>
+            </a>
+            <a id="returnZona" class="returnBtn showNone" class="btn btn-success" onClick="returnZona(this)">
+              <i class="fas fa-arrow-circle-left arrow"></i>
+            </a>
+          </div>
+
+          <div class="center" id="loaderList">
+            <div class="pulse">
+              <img src="img/logo-min.png" alt="">
+            </div>
+          </div>
+
+          <div class="zonas showNone homeCard"></div>
+
+          <div class="municipios showNone homeCard"></div>
+
+          <div class="focalizaciones showNone homeCard"></div>
+
+          <div class="planeaciones showNone animated homeCard">
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-8" id="rightPortion">
+
+          <div class="center" id="loaderCalendar">
+            <div class="pulse">
+              <img src="img/logo-min.png" alt="">
+            </div>
+          </div>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Calendario</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mapa</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div id="calendar"></div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div id="map"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- MODAL TRABAJO ADMINISTRATIVO -->
+  <div class="modal fade bd-example-modal-lg" id="modalTAdmin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div id="modalLoader" class="showNone">
+          <div class="center" id="loaderList">
+            <div class="pulse">
+              <img src="img/logo-min.png" alt="">
+            </div>
+          </div>
+        </div>
+
+        <div id="detalleCard">
+          <div id="headerModalTAdmin">
+            <i class="fas fa-laptop"></i>
+            <h2>Registrar Trabajo Administrativo</h2>
+          </div>
+          <div id="tAdmin" class="trabajoAdmin">
+            <form id="formTAdmin">
+                <div class="row">
+                  <div class="col-lg-4 col-md-12 col-sm-12">
+                    <label for="datepicker">Seleccione Fecha
+                      <label class="obligatorio" for="datepicker">*</label>
+                    </label>
+                    <input class="required" id="datepicker" placeholder="Fecha" name="fecha" readonly required/>
+                  </div>
+                  <div class="col-lg-4 col-md-12 col-sm-12">
+                    <label for="duracion">Hora inicio
+                      <label class="obligatorio" for="duracion">*</label>
+                    </label>
+                    <input class="form-control required" type="time" id="duracionInicio" name="horaInicio" required>
+                  </div>
+                  <div class="col-lg-4 col-md-12 col-sm-12">
+                    <label for="duracion">Hora finalización
+                      <label class="obligatorio" for="duracion">*</label>
+                    </label>
+                    <input class="form-control required" type="time" id="duracionFin" name="horaFin" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-lg-12 col-md-12">
+                    <label for="options">Seleccione las labores a trabajar <label class="obligatorio" for="options">*</label></label>
+                    <div id="options">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="prodInforme" name="tAdmin" value="1">
+                        <label class="custom-control-label" for="prodInforme">Producción de informe mensual</label>
+                      </div>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="tiempoEstudio" name="tAdmin" value="2">
+                        <label class="custom-control-label" for="tiempoEstudio">Tiempo de estudio</label>
+                      </div>
+                      <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="seguimiento" name="tAdmin" value="3">
+                          <label class="custom-control-label" for="seguimiento">Seguimiento a grupos  </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" id="getMun" style="display:none">
+
+                </div>
+                <div id="rowBtnTAdmin" class="row rowForms modal-footer">
+                  <div class="col-lg-6 col-md-6 col-sm-6 colBtnContacto">
+                    <button id="btnCancelarTAdmin" type="button" class="btn btn-danger">Cancelar</button>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 colBtnContacto">
+                    <button id="btnRegTAdmin" type="button" class="btn btn-success" onclick="insertTAdmin()">Registrar</button>
+                  </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CALENDAR EVENT DETAILS -->
+  <div class="modal fade" id="modalEventsCalendar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" id="modalEventHeader">
+          <h5 class="modal-title" id="modalEventTitle">
+
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modalEventDescription">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CALENDAR DETAILS -->
+  <div class="modal fade bd-example-modal-lg" id="modalCalendarDetails" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div style="height: auto; padding: 20px">
+          <div class="indicadoresCalendar" id="planeado">Evento Planeado</div>
+          <div class="indicadoresCalendar" id="enejecucion">Evento en Ejecución</div>
+          <div class="indicadoresCalendar" id="ejecutado">Evento Ejecutado</div>
+          <div class="indicadoresCalendar" id="tadmin">Tarea Administrativa</div>
+          <div class="indicadoresCalendar" id="noejecutado">Evento no Ejecutado</div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </main>
+
+
+  <!-- SCRIPTS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/includes/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="js/includes/moment.min.js"></script>
+  <script src="js/includes/fullcalendar/fullcalendar.min.js"></script>
+  <script src="js/includes/fullcalendar/es.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.28.8/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7.1.0/dist/promise.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/messages/messages.es-es.js" type="text/javascript"></script>
+  <script src="js/homeGestor.js"></script>
+  <script src="js/homeCalendarEvents.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAO9dhMcvk1MDYRaEi-TMUz_G0cI5m8Cl0&language=es&callback=initMap"></script>
+  <script src="js/homeMaps.js"></script>
+
+</body>
+
+</html>
