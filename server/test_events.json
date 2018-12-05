@@ -1,0 +1,74 @@
+
+[
+    {
+        "id": "01",
+        "title": "Cole - Municipio",
+        "allDay": false,
+        "start": "2017-09-04T08:00:00-05:00",
+        "end": "2017-09-04T12:00:00-05:00",
+        "editable": false,
+        "color": "rgb(80,164,149)",
+        "textColor": "white",
+        "lugar": "Municipio: NombreEntidad",
+        "descripcion": "Estrategia: Tactico. Comportamiento-Competencia: Tema. #Fichero"
+    },
+    {
+        "id": "02",
+        "title": "Comunidad - Municipio",
+        "allDay": false,
+        "start": "2017-09-06T14:00:00-05:00",
+        "end": "2017-09-04T18:00:00-05:00",
+        "editable": false,
+        "color": "rgb(36,90,155)",
+        "textColor": "white",
+        "lugar": "Municipio: NombreEntidad",
+        "descripcion": "Estrategia: Tactico. Comportamiento-Competencia: Tema. #Fichero"
+    },
+    {
+        "id": "03",
+        "title": "Familia - Municipio",
+        "allDay": true,
+        "start": "2017-09-10",
+        "editable": false,
+        "color": "rgb(117,158,66)",
+        "textColor": "white",
+        "lugar": "Municipio: NombreEntidad",
+        "descripcion": "Estrategia: Tactico. Comportamiento-Competencia: Tema. #Fichero"
+    },
+    {
+        "id": "04",
+        "title": "Empresa - Municipio",
+        "allDay": false,
+        "start": "2017-09-13T08:00:00-05:00",
+        "end": "2017-09-13T12:00:00-05:00",
+        "editable": false,
+        "color": "rgb(234,205,65)",
+        "textColor": "white",
+        "lugar": "Municipio: NombreEntidad",
+        "descripcion": "Estrategia: Tactico. Comportamiento-Competencia: Tema. #Fichero"
+    },
+    {
+        "id": "05",
+        "title": "Gobierno - Municipio",
+        "allDay": false,
+        "start": "2017-09-15T14:00:00-05:00",
+        "end": "2017-09-15T18:00:00-05:00",
+        "editable": false,
+        "color": "rgb(219,150,0)",
+        "textColor": "white",
+        "lugar": "Municipio: NombreEntidad",
+        "descripcion": "Estrategia: Tactico. Comportamiento-Competencia: Tema. #Fichero"
+    },
+    {
+        "id": "06",
+        "title": "Otros - Municipio",
+        "allDay": false,
+        "start": "2017-09-16T08:00:00-05:00",
+        "end": "2017-09-16T12:00:00-05:00",
+        "editable": false,
+        "color": "rgb(139,141,142)",
+        "textColor": "white",
+        "lugar": "Municipio: NombreEntidad",
+        "descripcion": "Estrategia: Tactico. Comportamiento-Competencia: Tema. #Fichero"
+    }
+]

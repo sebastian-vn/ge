@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Banco de Herramientas</title>
+  <link rel="shortcut icon" href="img/Martz90-Circle-Books.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/foundation.min.css">
+  <link rel="stylesheet" href="css/animate.min.css">
+  <link rel="stylesheet" href="fonts/foundation-icons/foundation-icons.css">
+  <link rel="stylesheet" href="css/contenido.css">
+</head>
+
+<body>
+  <div id="nav">
+    <div class="top-bar" id="responsive-menu">
+      <div class="top-bar-left">
+        Banco de Herramientas
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-y grid-padding-y" style="height: 100%">
+    <div id="side" class="sidenav">
+      <div id="img-sidebar">
+        <img src="img/chec.png" alt="CHEC">
+      </div>
+      <a href="index.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/1.png" height="40" alt="Inicio">Inicio</a>
+      <a href="generalidades.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/2.png" height="40" alt="Inicio">Generalidades</a>
+      <a href="criterios_conceptuales.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/3.png" height="40" alt="Inicio">Criterios Conceptuales</a>
+      <a href="herramientas_didacticas.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/4.png" height="40" alt="Inicio">Herramientas didácticas</a>
+      <a href="glosario.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/5.png" height="40" alt="Inicio">Glosario</a>
+      <a href="recursos.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/6.png" height="40" alt="Inicio">Recursos</a>
+      <a href="banco.zip" download>
+        <img class="sidebar" src="img/download.png" height="20" alt="Inicio">Descargar Banco</a>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main_generalidades">
+      <div id="recursos">
+        <div class="tab-recursos">
+          <ul class="tabs" data-deep-link data-active-collapse="true" data-tabs id="collapsing-tabs">
+            <li class="tabs-title is-active">
+              <a href="#1" aria-selected="true">Documentos</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#2">Vídeos</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#3">Imágenes</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#4">Presentaciones</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#5">Juego</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#6">Manuales</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#7">Audios</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#9">Programas de radio</a>
+            </li>
+          </ul>
+
+          <div class="tabs-content" data-tabs-content="collapsing-tabs">
+            <div class="tabs-panel is-active" id="1">
+            </div>
+            <div class="tabs-panel" id="2">
+            </div>
+            <div class="tabs-panel" id="3">
+            </div>
+            <div class="tabs-panel" id="4">
+            </div>
+            <div class="tabs-panel" id="5">
+            </div>
+            <div class="tabs-panel" id="6">
+            </div>
+            <div class="tabs-panel" id="7">
+            </div>
+            <div class="tabs-panel" id="9">
+            </div>
+          </div>
+        </div>
+
+        <button class="hollow button recursos-button" data-open="subir-archivo">Subir Recurso</button>
+      </div>
+
+      <!-- MODAL -->
+      <div class="reveal animated fadeInDown" id="subir-archivo" data-reveal>
+        <div id="header-modal">
+          Cargar Archivo
+        </div>
+        <div id="my-form">
+          <form action="server/upload.php" method="POST" enctype="multipart/form-data" id="form-recursos">
+            <div class="grid-container">
+              <div class="grid-x grid-padding-x">
+                <div class="medium-12 cell">
+                </div>
+              </div>
+            </div>
+            <label>¿A qué módulo desea subir el archivo?
+              <select id="select_recursos" name="recurso">
+                <option value="" selected>Seleccione el tema</option>
+              </select>
+            </label>
+            <input id="button-subir_recurso" name="files[]" type="file" multiple>
+
+            <button id="upload-recurso" type="submit" class="hollow button" href="#">Cargar Recursos</button>
+
+            <div id="request-loader" class="cssload-thecube hide">
+              <div class="cssload-cube cssload-c1"></div>
+              <div class="cssload-cube cssload-c2"></div>
+              <div class="cssload-cube cssload-c4"></div>
+              <div class="cssload-cube cssload-c3"></div>
+            </div>
+
+          </form>
+
+          <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/vendor/what-input.js"></script>
+  <script src="js/vendor/foundation.js"></script>
+  <script src="js/recursos.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+
+</html>

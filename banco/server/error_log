@@ -1,0 +1,110 @@
+[15-Aug-2018 01:18:50 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getZonas.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[15-Aug-2018 01:18:50 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getCompetencias.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[15-Aug-2018 01:18:50 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getIndicadores.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[15-Aug-2018 01:18:50 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getFicheros.php(4): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[21-Aug-2018 10:58:05 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getCompetencias.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[21-Aug-2018 10:58:05 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getIndicadores.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[21-Aug-2018 10:58:05 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getZonas.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[21-Aug-2018 10:58:05 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getFicheros.php(4): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[11-Sep-2018 16:35:14 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getCompetencias.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[11-Sep-2018 16:35:14 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getZonas.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[11-Sep-2018 16:35:14 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getIndicadores.php(5): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[11-Sep-2018 16:35:14 America/New_York] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] could not connect to server: Connection refused
+	Is the server running on host "ec2-54-197-233-123.compute-1.amazonaws.com" and accepting
+	TCP/IP connections on port 5432? in /home/gestjjlg/public_html/banco/server/lib.php:28
+Stack trace:
+#0 /home/gestjjlg/public_html/banco/server/lib.php(28): PDO->__construct('pgsql:host=ec2-...')
+#1 /home/gestjjlg/public_html/banco/server/lib.php(10): geBanco->connectDB()
+#2 /home/gestjjlg/public_html/banco/server/getFicheros.php(4): geBanco->__construct()
+#3 {main}
+  thrown in /home/gestjjlg/public_html/banco/server/lib.php on line 28
+[11-Sep-2018 18:21:09 America/New_York] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/gestjjlg/public_html/banco/server/zipFile.php on line 31
+[11-Sep-2018 18:22:24 America/New_York] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/gestjjlg/public_html/banco/server/zipFile.php on line 31

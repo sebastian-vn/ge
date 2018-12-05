@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Focalización</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
+  <link rel="stylesheet" href="css/fileinput.min.css">
+  <link rel="stylesheet" href="css/fileinput-rtl.min.css">
+  <link rel="stylesheet" href="css/newStyle.css">
+
+<body>
+
+  <div class="loader" style="display: none">
+    <div class="center" id="loaderList">
+      <div class="pulse">
+        <img src="img/logo-min.png" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+
+        <!-- NAVBAR PART -->
+        <ul class="nav justify-content-end" id="navGE">
+            <li class="nav-item imgsNav">
+              <img src="img/logo-min.png" alt="" class="navImg">
+              <img src="img/Universidad-de-manizales.png" alt="" class="navImg">
+            </li>
+
+            <li class="nav-item">
+
+            </li>
+
+            <li class="nav-item" id="lastSideNav">
+              <a id="homeBtn" class="nav-link"><i class="fas fa-home"></i></a>
+              <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>
+            </li>
+          </ul>
+
+    <div id="createInter" class="row justify-content-center">
+      <div id="colCreateInter" class="col-lg-9 col-md-12 col-sm-12">
+        <div id="form-card">
+          <div class="header">
+            <h1>Registre Focalización</h1>
+          </div>
+          <div id="intervencion">
+            <form id="intForm" action="">
+
+              <div class="tab">
+                <div class="row formRows">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <label for="selectMunicipio">Municipio</label>
+                    <label for="selectMunicipio" class="obligatorio">*</label>
+                    <select class="custom-select" id="selectMunicipio" name="municipio">
+                      <option value="" selected>Seleccione</option>
+                    </select>
+                  </div>
+                </div>
+
+                <label for="tipoGestion">Seleccione el tipo de gestión <label for="tipoGestion" class="obligatorio">*</label></label>
+                <div id="tipoGestion" class="row formRows">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="gFormativa" name="tipoGestion" required value="1"
+                      checked>
+                    <label class="custom-control-label" for="gFormativa">Formativa</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="gInstitucional" name="tipoGestion" required
+                      value="2">
+                    <label class="custom-control-label" for="gInstitucional">Institucional</label>
+                  </div>
+                </div>
+
+                <!-- Tipo de intervención -->
+                <div class="row formRows">
+                  <div id="tipoIntervencion" class="col-sm-6">
+                    <label for="selectTipoInt">Tipo de Focalización</label>
+                    <label for="selectTipoInt" class="obligatorio">*</label>
+                    <select class="custom-select" id="selectTipoInt" name="tipoFocalizacion">
+                      <option value="" selected>Seleccione</option>
+                      <option value="Sostenimiento">Sostenimiento</option>
+                      <option value="Mejoramiento">Mejoramiento</option>
+                    </select>
+                  </div>
+
+                  <!-- Comportamiento -->
+                  <div id="comportamiento" class="col-sm-6">
+                    <label for="selectComportamiento">Comportamiento</label>
+                    <label for="selectComportamiento" class="obligatorio">*</label>
+                    <select class="custom-select" id="selectComportamiento" name="comportamiento">
+                      <option value="" selected>Seleccione</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab">
+                <!-- Indicadores de control -->
+                <div class="formRows">
+                  <label for="selectIndicadorInt">Indicadores de control CHEC</label>
+                  <label for="selectIndicadorInt" class="obligatorio">*</label>
+                  <small id="indicadorDesc" class="form-text text-muted">Estos son los indicadores de control CHEC
+                    más
+                    relevantes observados en los tableros de control.
+                  </small>
+                  <select class="form-control" id="selectIndicadorInt" name="indicadores[]" multiple>
+                  </select>
+                  <small id="indicadorHelp" class="form-text text-muted">Para seleccionar varios indicadores,
+                    mantenga
+                    la
+                    tecla Ctrl Presionada y seleccione las opciones requeridas.
+                  </small>
+                </div>
+              </div>
+            </form>
+
+            <div style="overflow:auto; margin: 50px 0px 0px 0px;">
+              <div style="float:right;">
+                <button class="btn btn-success" type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
+                <button class="btn btn-success" type="button" id="submitInstit" style="display: none">Guardar</button>
+                <button class="btn btn-success" type="button" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-top:40px;">
+              <span class="step"></span>
+              <span class="step"></span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div id="coordinadoraInt" class="col-lg-3 col-md-12 col-sm-0">
+        <img id="img-intervencion" src="img/Coordinadora138px-01.png" alt="">
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="js/includes/fileInput/fileinput.js"></script>
+  <script src="js/includes/fileInput/sortable.min.js"></script>
+  <script src="js/includes/fileInput/theme.min.js"></script>
+  <script src="js/includes/fileInput/locales/es.js"></script>
+  <script src="js/includes/dataTable/datatables.min.js"></script>
+  <script src="js/includes/dataTable/jquery.dataTables.min.js"></script>
+  <script src="js/includes/dataTable/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.28.8/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7.1.0/dist/promise.min.js"></script>
+  <script src="js/registrarFocalizacionG.js"></script>
+  </head>
+
+
+
+</body>
+
+</html>

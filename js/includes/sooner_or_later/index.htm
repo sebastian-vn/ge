@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="description" content="Free "Coming Soon" Page Template Designed For WebResourcesDepot.com by Studio VIVROCKS " />
+<meta name="keywords" content="coming soon, launch page, template" />
+<meta name="author" content="Studio VIVROCKS" />
+<title>Sooner or Later - Free "Coming Soon" template</title>
+
+<!-- #################################################################################################################
+
+Designed by VIVROCKS
+Visit www.vivrocks.com for more Graphics Freebies
+
+Need Something Designed?
+Logos, Print Materials, Websites, Wordpress Blogs: visit www.vivrocks.com or mail me viv@vivrocks.com
+
+################################################################################################################### -->
+
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<!--------------------------------------------GET jQuery-------------------------------------------------------------------->
+<script type="text/javascript" src="js/jQuery.js"></script>
+
+<!--------------------------------------------CUFON-------------------------------------------------------------------->
+<script type="text/javascript" src="js/cufon-yui.js"></script>
+<script type="text/javascript" src="js/League.Gothic.font.js"></script>
+<script type="text/javascript">
+	Cufon.replace('h1,h2,h3,#logo');
+</script>
+
+<!--------------------------------------------COUNTDOWN-------------------------------------------------------------------->
+<script src="js/jquery.countdown.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+	// *************************************************** EDIT DATE IN LINE BELOW ******************************************			   
+	$('div#clock').countdown("2012/12/12" , function(event) {
+	var $this = $(this);
+	switch(event.type) {
+	case "seconds":
+	case "minutes":
+	case "hours":
+	case "days":
+	case "weeks":
+	case "daysLeft":
+	$this.find('span#'+event.type).html(event.value);
+	break;
+	case "finished":
+	$this.hide();
+	break;
+	}
+	});
+	});
+</script>
+
+</head>
+
+<body>
+<div id="wrapper">
+<!--------------------------------------------Edit Company Name Here-------------------------------------------------------------------->
+	<div id="logo">Sooner or Later</div>
+    <div style="clear:both"></div>
+    <h3>Exclusive Coming Soon Template For You!</h3>
+    <div id="frame">
+    <div id="sizewrap">
+    
+        <h1>WE ARE WORKING HARD TO LAUNCH IT</h1>
+        <h2>New look, new features and a faster interface!</h2>
+    
+        <div id="clock">
+            <div class="block"><span id="weeks"></span>WEEKS</div>
+                <div class="space">&nbsp;</div>
+            
+            <div class="block"><span id="daysLeft"></span>DAYS</div>
+                <div class="space">&nbsp;</div>
+            
+            <div class="block"><span id="hours"></span>HOURS</div>
+                <div class="space">&nbsp;</div>
+            
+            <div class="block"><span id="minutes"></span>MINUTES</div>
+                <div class="space">&nbsp;</div>
+            
+            <div class="block"><span id="seconds"></span>SECONDS</div>
+        </div>
+        
+        <h2>Follow us for updates</h2>
+        
+        <div id="social">
+            <div class="fbbutton"><a href="http://www.facebook.com/StudioVIVROCKS"><img src="images/fb-button.png" width="190" height="32"></a></div>
+            <div class="tweetbutton"><a href="http://twitter.com/#!/ZoneofWizards"><img src="images/twit-button.png" width="190" height="32"></a></div>
+        </div>
+        
+        <div style="clear:both"></div>
+        
+        </div>
+    </div>
+    
+    <div id="footer">Designed by <a href="http://www.vivrocks.com" title="Freelance Branding Artist, Web &amp; Graphics Designer, Wordpress Developer and New Media Consultant">VIVROCKS</a> | Distributed by <a href="http://www.webresourcesdepot.com/">WebResourcesDepot</a></div>
+                
+</div>
+</body>
+</html>

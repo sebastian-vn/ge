@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Banco de Herramientas</title>
+  <link rel="shortcut icon" href="img/Martz90-Circle-Books.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/foundation.min.css">
+  <link rel="stylesheet" href="css/animate.min.css">
+  <link rel="stylesheet" href="css/contenido.css">
+</head>
+
+<body>
+  <div id="nav">
+    <div class="top-bar" id="responsive-menu">
+      <div class="top-bar-left">
+        Banco de Herramientas
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-y grid-padding-y" style="height: 100%">
+    <div id="side" class="sidenav">
+      <div id="img-sidebar">
+        <img src="img/chec.png" alt="CHEC">
+      </div>
+      <a href="index.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/1.png" height="40" alt="Inicio">Inicio</a>
+      <a href="generalidades.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/2.png" height="40" alt="Inicio">Generalidades</a>
+      <a href="criterios_conceptuales.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/3.png" height="40" alt="Inicio">Criterios Conceptuales</a>
+      <a href="herramientas_didacticas.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/4.png" height="40" alt="Inicio">Herramientas didácticas</a>
+      <a href="glosario.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/5.png" height="40" alt="Inicio">Glosario</a>
+      <a href="recursos.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/6.png" height="40" alt="Inicio">Recursos</a>
+      <a href="banco.zip" download>
+        <img class="sidebar" src="img/download.png" height="20" alt="Inicio">Descargar Banco</a>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main_generalidades">
+      <div id="content-glosario">
+        <div id="glosario">
+          <ul class="tabs" data-deep-link data-active-collapse="true" data-tabs id="collapsing-tabs">
+            <li class="tabs-title is-active">
+              <a href="#glosario" aria-selected="true">Glosario</a>
+            </li>
+            <li class="tabs-title">
+              <a href="#adicionales">Adicionales</a>
+            </li>
+          </ul>
+
+          <div class="tabs-content" data-tabs-content="collapsing-tabs">
+            <div class="tabs-panel is-active" id="glosario">
+              <p>Aún no se cargan documentos en el módulo de Glosario.</p>
+            </div>
+            <div class="tabs-panel" id="adicionales">
+              <p>Aún no se cargan documentos en el módulo de Adicionales.</p>
+            </div>
+          </div>
+        </div>
+        <button class="hollow button recursos-button" data-open="subir-archivo">Subir Archivos</button>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="reveal animated fadeInDown" id="subir-archivo" data-reveal>
+      <div id="header-modal">
+        Cargar Archivo
+      </div>
+      <div id="my-form">
+        <form>
+          <div class="grid-container">
+            <div class="grid-x grid-padding-x">
+              <div class="medium-12 cell">
+              </div>
+            </div>
+          </div>
+          <label>¿A qué módulo desea subir el archivo?
+            <select>
+            </select>
+          </label>
+          <label id="button-subir" for="button-subir_glosario" class="button">Seleccionar Archivo</label>
+          <input id="button-subir_glosario" type="file" class="show-for-sr" multiple>
+
+          <button id="generalidades-button" class="hollow button" href="#">Cargar Archivo</button>
+        </form>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/vendor/what-input.js"></script>
+  <script src="js/vendor/foundation.js"></script>
+  <script src="js/contenido.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Planeación</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
+  <link rel="stylesheet" href="css/fileinput.min.css">
+  <link rel="stylesheet" href="css/fileinput-rtl.min.css">
+  <link rel="stylesheet" href="css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="css/newStyle.css">
+</head>
+
+<body>
+
+  <div class="loader" style="display: none">
+    <div class="center" id="loaderList">
+      <div class="pulse">
+        <img src="img/logo-min.png" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- NAVBAR PART -->
+    <ul class="nav justify-content-end" id="navGE">
+      <li class="nav-item imgsNav">
+        <img src="img/logo-min.png" alt="" class="navImg">
+        <img src="img/Universidad-de-manizales.png" alt="" class="navImg">
+      </li>
+
+      <li class="nav-item">
+
+      </li>
+
+      <li class="nav-item" id="lastSideNav">
+        <a id="homeBtn" class="nav-link"><i class="fas fa-home"></i></a>
+        <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>
+      </li>
+    </ul>
+
+    <div id="createInter" class="row justify-content-center">
+      <div id="colCreateInter" class="col-lg-7 col-md-12 col-sm-12">
+        <div id="form-card">
+          <div class="header">
+            <h1>Registre Planeación</h1>
+          </div>
+          <div id="planeacion">
+            <form id="planForm" action="">
+              <div class="tab">
+                <div class="row formRows">
+                  <div id="colDatepicker" class="col-lg-12 col-md-12 col-sm-12">
+                    <label for="datepicker">Seleccione Fecha
+                      <label class="obligatorio" for="datepicker">*</label>
+                    </label>
+                    <input class="required" id="datepicker" placeholder="Fecha" name="fecha" readonly />
+                  </div>
+                </div>
+
+                <hr class="hrForms">
+
+                <div class="row formRows">
+                  <div class="col-lg-6 col-md-12 col-sm-12">
+                    <label for="jornada">Seleccione la jornada
+                      <label class="obligatorio" for="jornada">*</label>
+                    </label>
+                    <select class="form-control required" name="jornada" id="jornada" aria-placeholder="Jornada">
+                      <option value="" selected>Jornada</option>
+                      <option value="1">Mañana</option>
+                      <option value="2">Tarde</option>
+                      <option value="3">Todo el día</option>
+                    </select>
+                  </div>
+                  <div id="colLugarEncuentro" class="col-lg-6 col-md-12 col-sm-12">
+                    <label for="lugarEncuentro">Lugar de encuentro <label class="obligatorio">*</label></label>
+                    <input type="text" placeholder="Lugar" id="lugarEncuentro" name="lugarEncuentro" aria-label="Lugar de encuentro"
+                      class="form-control required">
+                  </div>
+                </div>
+
+                <hr class="hrForms">
+
+                <label for="ruralOurbano">Ubicación Municipio</label>
+                <div id="ruralOurbano" class="row">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="radioRural" name="ubicMunicipio" required
+                      value="rural">
+                    <label class="custom-control-label" for="radioRural">Rural</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="radioUrbano" name="ubicMunicipio" required
+                      value="urbano">
+                    <label class="custom-control-label" for="radioUrbano">Urbano</label>
+                  </div>
+                </div>
+
+                <div id="vereda" class="row formRows">
+                  <div class="col-sm-12">
+                    <label for="selectVereda">Vereda</label>
+                    <label for="selectVereda" class="obligatorio">*</label>
+                    <select class="form-control" id="selectVereda" name="vereda">
+                    </select>
+                  </div>
+                </div>
+
+                <div id="comunaObarrio" class="row">
+                  <div id="barrio" class="col-sm-12">
+                    <label for="selectBarrio">Barrio</label>
+                    <label for="selectBarrio" class="obligatorio">*</label>
+                    <select class="form-control" id="selectBarrio" name="barrio">
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab">
+                <div class="row formRows">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <label for="">Seleccione los contactos <label class="obligatorio" for="tableContactos">*</label></label>
+                    <table id="tableContactos" class="table table-striped table-bordered dataTable">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Cedula</th>
+                          <th>Nombre</th>
+                          <th>Celular</th>
+                          <th>Cargo</th>
+                          <th>Entidad</th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="alert alert-danger showNone" id="alertaContacto" role="alert">
+                  Debes seleccionar por lo menos un contacto para continuar. Si no tienes, registra uno.
+                </div>
+
+                <div id="rowContacto" class="row formRows">
+                  <button id="btnRegistrarContacto" type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#modalRegistrarContacto"><i class="fas fa-user-plus" id="iconRegistrarContacto"></i>Registrar
+                    Contacto</button>
+                </div>
+
+              </div>
+
+              <div class="tab">
+                <div class="row formRows">
+                  <div class="col-lg-9 col-md-6 col-sm-12">
+                    <div class="form-group">
+                      <label for="selectEntidad">Entidad <label for="selectEntidad" class="obligatorio">*</label></label>
+                      <select class="custom-select required" name="entidad" id="selectEntidad">
+                        <option value="" selected>Seleccione</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-12 col-sm-12" id="colRegistrarEntidad">
+                    <button id="btnRegistrarEntidad" type="button" class="btn btn-primary" data-toggle="modal"
+                      data-target="#modalRegistrarEntidad"><i class="fas fa-building" id="iconRegistrarEntidad"></i></i>Registrar
+                      Entidad</button>
+                  </div>
+                </div>
+
+                <hr class="hrForms">
+
+                <div class="row formRows">
+                  <div class="col-lg-6 col-md-6 col-sm-12" style="border-right: solid 1px #80808066;">
+                    <div class="form-group">
+                      <label for="selectTema">Tema <label for="selectTema" class="obligatorio">*</label></label>
+                      <select class="custom-select required" name="tema" id="selectTema">
+                        <option selected>Seleccione</option>
+                      </select>
+                    </div>
+                    <div id="divSubtemas">
+                      <ul></ul>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="form-group">
+                      <label for="selectEstrategia">Estrategia <label for="selectEstrategia" class="obligatorio">*</label></label>
+                      <select class="custom-select required" name="estrategia" id="selectEstrategia" aria-describedby="selectHelpEstrategia">
+                        <option selected>Seleccione</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectTactico">Tactico <label for="selectTactico" class="obligatorio">*</label></label>
+                        <select class="custom-select required" name="tactico[]" id="selectTactico" aria-describedby="selectHelpTactico"
+                          multiple>
+                          <option selected>Seleccione</option>
+                        </select>
+                        <small id="selectHelpTactico" class="form-text text-muted">Deje presionado <kbd>ctrl</kbd> para
+                          seleccionar mas de un tactico</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab">
+                <div class="row formRows">
+                  <div class="col-lg-12 col-md-12 col-sm-12" id="indicadores">
+                    <div class="form-group">
+                      <div class="card">
+                        <div class="card-header">
+                          INDICADORES DE LOGRO
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">
+                            <ul></ul>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+<!--                 <hr class="hrForms">
+  
+                <div class="row formRows">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="form-group">
+                      <label for="selectFichero">Guia de trabajo<label for="selectFichero" class="obligatorio">*</label></label>
+                      <select class="custom-select required" name="fichero[]" id="selectFichero">
+                        <option value="">Seleccione</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> -->
+
+                <hr class="hrForms">
+
+                <label for="solicitudEducativa">¿Esta actividad es una solicitud educativa recibida a través de la
+                  interventoría?</label>
+                <div id="solicitudEducativa" class="row formRows">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="siSolicitud" name="solicitudEducativa"
+                      required value="true">
+                    <label class="custom-control-label" for="siSolicitud">Si</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="noSolicitud" name="solicitudEducativa"
+                      required value="false" checked>
+                    <label class="custom-control-label" for="noSolicitud">No</label>
+                  </div>
+                </div>
+
+                <!-- Cargar una solicitud -->
+                <div class="row formRows">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div id="subirSolicitud" class="custom-file">
+                      <input type="file" class="custom-file-input" id="customFileLang" lang="es" multiple>
+                      <label class="custom-file-label" for="customFileLang">Seleccionar solicitud</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div style="overflow:auto; margin: 50px 0px 0px 0px;">
+              <div style="float:right;">
+                <button class="btn btn-success" type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
+                <button class="btn btn-success" type="button" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-top:40px;">
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div id="coordinadoraInt" class="col-lg-5 col-md-12 col-sm-0">
+        <img id="img-intervencion" src="img/SeñoritaEscritorio385pxV1.png" alt="">
+      </div>
+    </div>
+
+    <!-- Modal registrar contacto0 -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+      aria-hidden="true" id="modalRegistrarContacto">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="row rowForms" id="rowIcon">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <form id="formCrearContacto" action="">
+            <div class="row rowForms">
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <label for="nombreContacto">Nombres<label class="obligatorio">*</label></label>
+                <input type="text" placeholder="Nombres" id="nombreContacto" name="nombres" aria-label="Nombres del contacto"
+                  class="form-control required" required>
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <label for="apellidoContacto">Apellidos<label class="obligatorio">*</label></label>
+                <input type="text" placeholder="Apellidos" id="apellidoContacto" name="apellidos" aria-label="Apellidos del contacto"
+                  class="form-control required" required>
+              </div>
+            </div>
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <label for="cedulaContacto">Cédula</label>
+                <input type="text" placeholder="Cédula" id="cedulaContacto" name="cedula" aria-label="Cedula del contacto"
+                  class="form-control ">
+              </div>
+            </div>
+            <div class="row rowForms">
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <label for="TelefonoContacto">Telefono</label>
+                <input type="text" placeholder="Telefono" id="TelefonoContacto" name="telefono" aria-label="Telefono del contacto"
+                  class="form-control ">
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <label for="celularContacto">Celular</label>
+                <input type="text" placeholder="Celular" id="celularContacto" name="celular" aria-label="Celular del contacto"
+                  class="form-control ">
+              </div>
+            </div>
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <label for="correoContacto">Correo electronico</label>
+                <input type="text" placeholder="Correo" id="correoContacto" name="email" aria-label="Correo electronico del contacto"
+                  class="form-control ">
+              </div>
+            </div>
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <label for="entidadContacto">Entidad<label class="obligatorio">*</label></label>
+                <select type="text" placeholder="Entidad" id="entidadContacto" name="entidad" aria-label="Entidad del contacto"
+                  class="custom-select required" required>
+                  <option value="" selected>Seleccione</option>
+                </select>
+              </div>
+            </div>
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <label for="cargoContacto">Cargo</label>
+                <input type="text" placeholder="Cargo" id="cargoContacto" name="cargo" aria-label="Cargo del contacto"
+                  class="form-control">
+              </div>
+            </div>
+            <div id="rowBtnContacto" class="row rowForms">
+              <div class="col-lg-6 col-md-6 col-sm-6 colBtnContacto">
+                <button id="btnCrearContacto" type="submit" class="btn btn-success">Registrar</button>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 colBtnContacto">
+                <button id="btnCancelarRegContacto" type="button" class="btn btn-danger">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal registrar entidad -->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalRegistrarEntidad">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="row rowForms" id="rowIcon">
+            <i class="fas fa-university"></i>
+          </div>
+          <form id="formRegistrarEntidad" action="">
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <label for="nombreEntidad">Nombre entidad <label class="obligatorio">*</label></label>
+                <input type="text" placeholder="Nombre" id="nombreEntidad" name="nombre" aria-label="Nombre de la entidad"
+                  class="form-control required" required>
+              </div>
+            </div>
+
+            <hr>
+
+            <label for="colDireccion">Dirección <label for="colDireccion" class="obligatorio">*</label></label>
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <input type="text" class="form-control" name="direccion" id="direccionEntidad" placeholder="Dirección"
+                  required>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <label for="TelefonoContacto">Telefono</label>
+                <input type="text" placeholder="Telefono" id="TelefonoContacto" name="telefono" aria-label="Telefono del contacto"
+                  class="form-control">
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row rowForms">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="form-group">
+                  <label for="tipoEntidad">Tipo entidad <label for="tipoEntidad" class="obligatorio">*</label></label>
+                  <select class="custom-select" name="tipoEntidad" id="tipoEntidad" required>
+                    <option selected>Seleccione</option>
+                    <option value="1">Pública</option>
+                    <option value="2">Privada</option>
+                    <option value="3">Organización de una base comunitaria</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="rowBtnContacto" class="row rowForms">
+              <div class="col-lg-6 col-md-6 col-sm-6 colBtnContacto">
+                <button type="submit" id="btnCrearEntidad" class="btn btn-success">Registrar</button>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 colBtnContacto">
+                <button id="btnCancelarRegEntidad" type="button" class="btn btn-danger">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.28.8/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7.1.0/dist/promise.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/messages/messages.es-es.js" type="text/javascript"></script>
+  <script src="js/registrarPlaneacionG.js"></script>
+</body>
+
+</html>

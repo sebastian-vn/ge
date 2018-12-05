@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Banco de Herramientas</title>
+  <link rel="shortcut icon" href="img/Martz90-Circle-Books.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/foundation.min.css">
+  <link rel="stylesheet" href="css/animate.min.css">
+  <link rel="stylesheet" href="fonts/foundation-icons/foundation-icons.css">
+  <link rel="stylesheet" href="css/contenido.css">
+</head>
+
+<body>
+
+  <div class="grid-y grid-padding-y" style="height: 100%">
+    <div id="side" class="sidenav">
+      <div id="img-sidebar">
+        <img src="img/chec.png" alt="CHEC">
+      </div>
+      <a href="index.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/1.png" height="40" alt="Inicio">Inicio</a>
+      <a href="generalidades.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/2.png" height="40" alt="Inicio">Generalidades</a>
+      <a href="criterios_conceptuales.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/3.png" height="40" alt="Inicio">Criterios Conceptuales</a>
+      <a href="herramientas_didacticas.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/4.png" height="40" alt="Inicio">Herramientas didácticas</a>
+      <a href="glosario.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/5.png" height="40" alt="Inicio">Glosario</a>
+      <a href="recursos.html">
+        <img class="sidebar" data-alt-src="img/5-verde.png" src="img/6.png" height="40" alt="Inicio">Recursos</a>
+      <a href="banco.zip" download>
+        <img class="sidebar" src="img/download.png" height="20" alt="Inicio">Descargar Banco</a>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main_generalidades">
+      <div id="main-herramientas" class="grid-y">
+        <div class="header_filtros">
+          SELECCIONA TU GUIA DE TRABAJO
+        </div>
+        <div id="filtros-herramientas" class="cell small-3 medium-3 large-3">
+          <div class="row">
+            <button class="hollow button ficheros-button" data-open="subir-fichero">Subir Recurso</button>
+          </div>
+          <div class="row">
+            <label>Seleccione la competencia
+              <select id="competencia" class="fp filtros_competencia">
+              </select>
+            </label>
+            <label>Seleccione el tema
+              <select id="tema" class="fp filtros_tema">
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>Seleccione la zona del gestor
+              <select id="zona" class="fp filtros_zona">
+              </select>
+            </label>
+            <label>Seleccione el indicador
+              <select id="indicador" class="fp filtros_indicador">
+              </select>
+            </label>
+          </div>
+        </div>
+        <div id="ficheros-display" class="cell small-9 medium-9 large-9">
+          <div id="area-ficheros">
+          </div>
+          <div id="pdf">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="reveal animated fadeInDown" id="subir-fichero" data-reveal>
+    <div id="header-modal">
+      Cargar Archivo
+    </div>
+    <div id="form-ficheros">
+      <form id="form-sfichero" data-abide>
+        <div class="grid-container">
+          <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+            </div>
+          </div>
+        </div>
+        <label>Selecciona la competencia
+          <select id="sfichero_competencia" name="competencia" class="sf filtros_competencia" required>
+          </select>
+        </label>
+        <label>Selecciona el indicador
+          <select id="sfichero_indicador" name="indicador" class="sf filtros_indicador" required>
+          </select>
+        </label>
+        <label>Selecciona el tema
+          <select id="sfichero_tema" name="tema" class="sf filtros_tema" required>
+            <option value="">No filtro</option>
+          </select>
+        </label>
+        <label> Selecciona la zona del gestor
+          <select id="sfichero_zona" name="zona" class="sf filtros_zona" required>
+          </select>
+        </label>
+
+        <div id="gc">
+          <button id="generar-cod" class="hollow button">Generar Codigo</button>
+          <input type="text" value="" id="codigo" name="codigo" readonly required></input>
+        </div>
+
+        <input id="button-subir_fichero" type="file" name="fichero" required>
+
+        <button id="generalidades-button" class="hollow button" type="submit">Cargar Recursos</button>
+
+        <div id="request-loader" class="cssload-thecube hide">
+          <div class="cssload-cube cssload-c1"></div>
+          <div class="cssload-cube cssload-c2"></div>
+          <div class="cssload-cube cssload-c4"></div>
+          <div class="cssload-cube cssload-c3"></div>
+        </div>
+
+      </form>
+
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+
+  </div>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/vendor/what-input.js"></script>
+  <script src="js/vendor/foundation.js"></script>
+  <script src="js/herramientas.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Bienvenido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/newStyle.css">
+  <link rel="stylesheet" href="css/iniciarSesion.css">
+</head>
+
+<body cz-shortcut-listen="true">
+  <div class="contentLogIn" style="height: 100%;">
+    <div class="row" style="height: 100%;padding: 0px 15px 0px 15px;">
+      <div id="imgBienvenida" class="col-sm-12 col-md-5 col-lg-7">
+        <img src="img/imageedit_9_4682074666.png" alt="">
+      </div>
+      <div id="colInicarSesion" class="col-sm-12 col-md-7 col-lg-5">
+        <div class="card card-signin">
+          <div class="card-body">
+            <h5 class="card-title text-center">Inicie Sesión</h5>
+            <form class="form-signin" action="server/logIn.php" method="post">
+              <div class="form-label-group">
+                <input type="text" id="inputEmail" class="form-control" placeholder="Correo Electronico" required=""
+                  autofocus="" name="mailuid" onfocusout="verifyUserRol()">
+                <label for="inputEmail">Correo Electrónico / Usuario</label>
+              </div>
+
+              <div class="form-label-group">
+                <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required=""
+                  autofocus="" name="passwd">
+                <label for="inputPassword">Contraseña</label>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                  <button id="btnIngresar" class="btn btn-lg btn-block text-uppercase" name="loginSubmit" type="submit">Ingresar</button>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                  <button id="btnIngresarApp" class="btn btn-lg btn-block text-uppercase" name="loginGeoApp" type="submit" disabled="true">Activar Geolocalizador</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="imgSesion">
+          <div class="row">
+            <img src="img/LogoUMChec-01.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="js/includes/jquery-3.3.1.min.js"></script>
+  <script src="js/includes/popper.min.js"></script>
+  <script src="js/includes/bootstrap.min.js"></script>
+  <script src="js/includes/bootstrap.bundle.min.js"></script>
+<script src="js/iniciarSesion.js"></script>
+
+
+</body>
+
+</html>
