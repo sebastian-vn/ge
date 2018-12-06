@@ -40,11 +40,6 @@ $(document).ready(function() {
     paging: false
   });
 
-  //Hide modal registro de contacto
-  $("#cerrarDetalleModal").click(function() {
-    $("#detalleEjecModal").modal("toggle");
-  });
-
   //Prevent from typing negative numbers
   $("input[type=number]").keydown(function(e) {
     if (
@@ -441,6 +436,14 @@ function getDetallePlaneacion() {
         </div>
         <hr>
       </div>`
+      )
+
+      $('#detalleEjecModalBody ').append(
+        `<div class="row rowForms">
+          <div class="col-lg-12 col-md-12 col-sm-12 colBtnDetalle">
+            <button id="cerrarDetalleModal" data-toggle="modal" data-target="#detalleEjecModal" type="button" class="btn btn-danger">Cerrar</button>
+          </div>
+        </div>`
       )
 
       var tactic = response[1].tacticos;

@@ -10,14 +10,14 @@ function uploadAsistencias(){
   var asistencias = uploadAsis.cachedFileArray;
 
   console.log(asistencias, fotograficas);
-
+  var formData = new FormData();
+  formData.append(asistencias);
+  $(selector).append(content);
+  formData.append(fotograficas);
   $.ajax({
     type: "POST",
     url: "server/uploadRegistros.php",
-    data: {
-      ef : fotograficas,
-      asis : asistencias
-    },
+    data: formData,
     dataType: "json",
     processData: false, 
     contentType: false,
