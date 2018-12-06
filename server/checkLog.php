@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 if (!isset($_SESSION['user'])) {
     $data = ["message" => "No has inicado sesión!", "error" => 1];
 } else {
