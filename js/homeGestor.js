@@ -315,7 +315,7 @@ function checkLogged() {
         `<h6>${data.nombre}</h6>
         </hr>
         <form action="server/logOut.php" id="logOut">
-          <a class="nav-link active" style="color: red">Cerrar Sesión</a>
+          <a class="nav-link active" style="color: red" onclick="document.getElementById('logOut').submit();" >Cerrar Sesión</a>
         </form>
         <hr>
         <div id="modoSeguimiento">
