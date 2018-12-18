@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 if (!isset($_SESSION['user']) && !isset($_SESSION['guest'])) {
     $data = ["message" => "No has inicado sesión!", "error" => 1];
 } else if (isset($_SESSION['guest'])) {
