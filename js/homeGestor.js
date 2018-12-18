@@ -15,15 +15,15 @@ $(function() {
     }
   });
 
-  if(user == 3 || user == "Gestor"){
-    $('#rightPortion').html(
+  if (user == 3 || user == "Gestor") {
+    $("#rightPortion").html(
       `<div class="center" id="loaderCalendar">
         <div class="pulse">
           <img src="img/logo-min.png" alt="">
         </div>
       </div>
       <div id="calendar"></div>`
-    )
+    );
   }
 
   $("#logOut a").click(function() {
@@ -38,7 +38,7 @@ $(function() {
 var id_zona = getParam("id_zona");
 let id_plan = getParam("id_plan");
 let id_foc = getParam("id_foc");
-let user = getParam("user")
+let user = getParam("user");
 
 if (id_zona == "all") {
   getZona();
@@ -73,9 +73,7 @@ function getZona() {
                   <h5 class="card-title">Gestor: ${element.nombre}</h5>
                 </div>
               </div>
-              <a onClick="getMunicipioXZona(${
-                element.id_zona
-              })"><i class="fas fa-arrow-circle-right arrow"></i></a>
+              <a onClick="getMunicipioXZona(${element.id_zona}, '${element.zonas}')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
         );
       });
@@ -85,15 +83,18 @@ function getZona() {
       $(".zonas").removeClass("showNone");
       $("#homeBreadCrumbs").removeClass("showNone");
       $("#loaderList").fadeOut();
+      determineRtnBtn();
     }
   });
 }
 
-function getMunicipioXZona(zona) {
+function getMunicipioXZona(zona, nombre_zona) {
   $(".zonas").fadeOut();
   $(".zonas").addClass("showNone");
   $(".municipios").html("");
   $("#loaderList").fadeIn();
+  determineBreadcrumb("zona", nombre_zona);
+
   if (zona == "all") zona = id_zona;
   $.ajax({
     type: "POST",
@@ -124,18 +125,10 @@ function getMunicipioXZona(zona) {
               </div>
               <a href="#${element.municipio}" onClick="getFocalizacionesXZona(${
             element.id_municipio
-          }, '${element.municipio}', '${
-            element.zonas
-          }')"><i class="fas fa-arrow-circle-right arrow"></i></a>
+          }, '${element.municipio}')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
         );
       });
-      $(".breadcrumb").html("");
-      $(".breadcrumb").append(
-        `<li class="breadcrumb-item"><a href="#" onclick="returnMunicipio()">${
-          data[0].zonas
-        }</a></li>`
-      );
     },
     complete: function() {
       if (!$(".zona").hasClass("showNone")) {
@@ -148,24 +141,15 @@ function getMunicipioXZona(zona) {
       $(".municipios").removeClass("showNone");
       $("#homeBreadCrumbs").removeClass("showNone");
       $("#loaderList").fadeOut();
+      determineRtnBtn();
     }
   });
 }
 
-function getFocalizacionesXZona(mun, municipio, zona) {
+function getFocalizacionesXZona(mun, nom_mun) {
   $("#loaderList").fadeIn();
   $(".municipios").fadeOut();
-  $("#returnMunicipio").removeClass("showNone");
-  //if returns and does not have showNoneClass
-  if (!$("#returnFocalizaciones").hasClass("showNone")) {
-    $("#returnFocalizaciones").addClass("showNone");
-  }
-
-  $(".breadcrumb").html("");
-  $(".breadcrumb").append(
-    `<li class="breadcrumb-item"><a href="#" onclick="returnMunicipio()">${zona}</a></li>
-    <li class="breadcrumb-item"><a href="#">${municipio}</a></li>`
-  );
+  determineBreadcrumb("municipio", nom_mun);
 
   $.ajax({
     type: "POST",
@@ -195,7 +179,7 @@ function getFocalizacionesXZona(mun, municipio, zona) {
               </div>
               <a onclick="getPlaneacionesXFocalizacion(${
                 element.id_focalizacion
-              })"><i class="fas fa-arrow-circle-right arrow"></i></a>
+              }, 'Gestión Institucional')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
           );
         } else {
@@ -223,7 +207,9 @@ function getFocalizacionesXZona(mun, municipio, zona) {
               element.competencia
             }" onclick="getPlaneacionesXFocalizacion(${
               element.id_focalizacion
-            })"><i class="fas fa-arrow-circle-right arrow"></i></a>
+            }, '${
+              element.competencia
+            }')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
           );
         }
@@ -232,16 +218,17 @@ function getFocalizacionesXZona(mun, municipio, zona) {
     complete: function() {
       $(".focalizaciones").fadeIn();
       $(".focalizaciones").removeClass("showNone");
+      $(".municipios").addClass("showNone");
       $("#loaderList").fadeOut();
+      determineRtnBtn();
     }
   });
 }
 
-function getPlaneacionesXFocalizacion(foc) {
+function getPlaneacionesXFocalizacion(foc, comp) {
   $("#loaderList").fadeIn();
   $(".focalizaciones").fadeOut();
-  $("#returnFocalizacion").removeClass("showNone");
-  $("#returnMunicipio").addClass("showNone");
+  determineBreadcrumb("focalizacion", comp);
   $.ajax({
     type: "POST",
     url: "server/getPlaneaciones.php",
@@ -281,6 +268,7 @@ function getPlaneacionesXFocalizacion(foc) {
       $("#loaderList").fadeOut();
       $(".planeaciones").fadeIn();
       $(".planeaciones").removeClass("showNone");
+      determineRtnBtn();
     }
   });
 }
@@ -326,22 +314,43 @@ function checkLogged() {
 
       $("#pCompleta").bootstrapToggle("off");
 
-      $('#lastSideNav').html(
-        `<a class="nav-link" href="home.html?user=${data.rol}&id_zona=${data.zona}><i class="fas fa-home"></i></a>
+      $("#lastSideNav").html(
+        `<a class="nav-link" href="home.html?user=${data.rol}&id_zona=${
+          data.zona
+        }><i class="fas fa-home"></i></a>
         <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>`
       );
-
 
       $("#pCompleta").change(function() {
         if ($(this).prop("checked")) {
           $("#leftPortion").fadeOut();
           $("#leftPortion").addClass("showNone");
-          $("#rightPortion").switchClass("col-md-6", "col-md-12", 200, "linear");
-          $("#rightPortion").switchClass("col-lg-7", "col-lg-12", 200, "linear");
+          $("#rightPortion").switchClass(
+            "col-md-6",
+            "col-md-12",
+            200,
+            "linear"
+          );
+          $("#rightPortion").switchClass(
+            "col-lg-7",
+            "col-lg-12",
+            200,
+            "linear"
+          );
         } else {
           if ($("#leftPortion").hasClass("showNone")) {
-            $("#rightPortion").switchClass("col-md-12", "col-md-6", 200, "linear");
-            $("#rightPortion").switchClass("col-lg-12", "col-lg-7", 200, "linear");
+            $("#rightPortion").switchClass(
+              "col-md-12",
+              "col-md-6",
+              200,
+              "linear"
+            );
+            $("#rightPortion").switchClass(
+              "col-lg-12",
+              "col-lg-7",
+              200,
+              "linear"
+            );
             setTimeout(() => {
               $("#leftPortion").fadeIn();
               $("#leftPortion").removeClass("showNone");
@@ -406,26 +415,103 @@ function insertLaboresXTAdmin() {
   });
 }
 
-function returnMunicipio(btn) {
-  $(btn).addClass("showNone");
+function returnMunicipio() {
   $(".focalizaciones").fadeOut();
+  $(".focalizaciones").addClass("showNone");
   $(".municipios").fadeIn();
+  $(".municipios").removeClass("showNone");
+  determineRtnBtn();
+  if($(".breadcrumb #municipio").length > 0) $(".breadcrumb #municipio").remove();
 }
 
-function returnFocalizacion(btn) {
-  $("#returnMunicipio").removeClass("showNone");
-  $(btn).addClass("showNone");
+function returnFocalizacion() {
   $(".planeaciones").fadeOut();
+  $(".planeaciones").addClass("showNone");
   $(".focalizaciones").fadeIn();
+  determineRtnBtn();
+  if($(".breadcrumb #focalizacion").length > 0) $(".breadcrumb #focalizacion").remove();
 }
 
-function returnZona(btn) {
+function returnZona() {
   $(".breadcrumb").html("");
-  $("#returnMunicipio").addClass("showNone");
-  $(btn).addClass("showNone");
   $(".municipios").fadeOut();
+  $(".municipios").addClass("showNone");
   $(".zonas").fadeIn();
   $(".zonas").removeClass("showNone");
+  determineRtnBtn();
+  if($(".breadcrumb #zona").length > 0) $(".breadcrumb #zona").remove();
 }
 
-function determineBreadcrumb() {}
+function determineBreadcrumb(column, name) {
+  switch (column) {
+    case "zona":
+      $(".breadcrumb").html("");
+      $(".breadcrumb").append(
+        `<li class="breadcrumb-item" id="zona"><a href="#" onclick="returnMunicipio()">${name}</a></li>`
+      );
+      break;
+
+    case "municipio":
+      var selector = ".breadcrumb";
+      if ($(".breadcrumb #municipio").length > 0) {
+        selector = ".breadcrumb #municipio";
+      }
+      $(`${selector}`).append(
+        `<li class="breadcrumb-item" id="municipio"><a href="#" onclick="returnFocalizacion()">${name}</a></li>`
+      );
+      break;
+
+    case "focalizacion":
+      var selector = ".breadcrumb";
+      if ($(".breadcrumb #focalizacion").length > 0) {
+        selector = ".breadcrumb #focalizacion";
+      }
+      $(`${selector}`).append(
+        `<li class="breadcrumb-item" id="focalizacion"><a href="#" onclick="">${name}</a></li>`
+      );
+      break;
+    default:
+      break;
+  }
+}
+
+function determineRtnBtn() {
+  var homeCard = document.getElementsByClassName("homeCard");
+  for (i = 0; i < homeCard.length; i++) {
+    classList = homeCard[i].className.split(/\s+/);
+    if (classList.indexOf("showNone") == -1) {
+      var element = homeCard[i].id;
+    }
+  }
+
+  switch (element) {
+    case "municipios":
+      showReturnBtn("returnZona");
+      break;
+
+    case "focalizaciones":
+      showReturnBtn("returnMunicipio");
+      break;
+
+    case "planeaciones":
+      showReturnBtn("returnFocalizacion");
+      break;
+
+    default:
+      showReturnBtn("");
+      break;
+  }
+}
+
+function showReturnBtn(btn) {
+  var rtnbtns = document.getElementsByClassName("returnBtn");
+  for (i = 0; i < rtnbtns.length; i++) {
+    if (rtnbtns[i].id == btn) {
+      if (rtnbtns[i].classList.contains("showNone")) {
+        rtnbtns[i].classList.remove("showNone");
+      }
+    } else if (!rtnbtns[i].classList.contains("showNone")) {
+      rtnbtns[i].classList.add("showNone");
+    }
+  }
+}

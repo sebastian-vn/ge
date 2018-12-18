@@ -16,38 +16,48 @@ function executeQuery($con, $sql)
 
 function logIn($con, $sql, $pass)
 {
-    if ($result = $con->query($sql)) {
-        if ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    if(empty($sql)){
+        session_start();
 
-            $pswdCheck = password_verify($pass, $row['passwd']);
-            if ($pswdCheck == false) {
-                header("Location: ../iniciarSesion.html?error=wrgpswd");
-                exit();
-                echo false;
+        $_SESSION['guest'] = array("nombre" => "invitado", "rol" => 4, "zona" => "all");
+        header("Location: ../opciones.html?user=4&id_zona=all");
+        exit();
+    }else{
+        if ($result = $con->query($sql)) {
+            if ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-            } elseif ($pswdCheck == true) {
-                session_start();
-
-                $_SESSION['user'] = array('uid' => $row['cedula'],
-                    'pass' => $row['passwd'], 'nombre' => $row['nombres'], 'rol' => $row['id_rol'],
-                    'zona' => $row['id_zona']);
-
-                if ($row['id_rol'] != 3) {
-
-                    header("Location: ../home.html?user=" . $row['id_rol'] . "&id_zona=all");
+                $pswdCheck = password_verify($pass, $row['passwd']);
+                if ($pswdCheck == false) {
+                    header("Location: ../iniciarSesion.html?error=wrgpswd");
                     exit();
-                } else {
+                    echo false;
 
-                    header("Location: ../home.html?user=" . $row['id_rol'] . "&id_zona=" . $row['id_zona'] . "");
-                    exit();
+                } elseif ($pswdCheck == true) {
+                    session_start();
+
+                    $_SESSION['user'] = array('uid' => $row['cedula'],
+                        'pass' => $row['passwd'], 'nombre' => $row['nombres'], 'rol' => $row['id_rol'],
+                        'zona' => $row['id_zona']);
+
+                    if ($row['id_rol'] != 3) {
+
+                        header("Location: ../opciones.html?user=" . $row['id_rol'] . "&id_zona=all");
+                        exit();
+                    } else {
+
+                        header("Location: ../opciones.html?user=" . $row['id_rol'] . "&id_zona=" . $row['id_zona'] . "");
+                        exit();
+                    }
                 }
+            } else {
+                header("Location: ../iniciarSesion.html?error=nouser");
+                exit();
             }
-        } else {
-            header("Location: ../iniciarSesion.html?error=nouser");
-            exit();
         }
     }
 }
+
+
 
 function insertQuery($con, $sql)
 {
@@ -130,6 +140,23 @@ function getFocalizacionesXZonaQuery($con, $mun)
     WHERE mun.id_municipio = $mun
     GROUP BY foc.id_focalizacion, mun.id_municipio, mun.municipio, compor.id_comportamientos, compor.comportamientos, foc.tipo_focalizacion, foc.fecha, compe.competencia
     ORDER BY foc.fecha DESC";
+
+    return executeQuery($con, $sql);
+}
+
+function getInformesQuery($con){
+    $sql = "SELECT zona, SUM(cantidad_participantes)
+    FROM cobertura
+    GROUP BY zona";
+
+    return executeQuery($con, $sql);
+}
+
+function getMunicipioInformeQuery($con)
+{
+    $sql = "SELECT DISTINCT municipio
+    FROM cobertura
+    ORDER BY municipio ASC";
 
     return executeQuery($con, $sql);
 }
@@ -226,11 +253,15 @@ function getTemasQuery($con, $compor)
 
 function loginQuery($con, $uid, $psswd)
 {
-    $sql = "SELECT per.cedula, per.id_rol, rol.cargo, per.email, per.usuario, per.passwd, per.foto_url, asz.id_zona, per.nombres
-    FROM personas per
-	LEFT JOIN asignar_zonas asz ON asz.cedula_asignado = per.cedula
-    JOIN roles rol ON rol.id_cargo = per.id_rol
-    WHERE email = '" . $uid . "' OR usuario = '" . $uid . "' ";
+    if(empty($uid)){
+        $sql = "";
+    }else{
+        $sql = "SELECT per.cedula, per.id_rol, rol.cargo, per.email, per.usuario, per.passwd, per.foto_url, asz.id_zona, per.nombres
+        FROM personas per
+        LEFT JOIN asignar_zonas asz ON asz.cedula_asignado = per.cedula
+        JOIN roles rol ON rol.id_cargo = per.id_rol
+        WHERE email = '" . $uid . "' OR usuario = '" . $uid . "' ";
+    }
 
     return logIn($con, $sql, $psswd);
 }
@@ -571,5 +602,14 @@ function aplazarPlaneacionQuery($con, $id_plan, $fecha_plan)
 	SET fecha_plan='$fecha_plan'
     WHERE id_planeacion = $id_plan;";
 
-    insertQuery($con, $sql);
+    return insertQuery($con, $sql);
+}
+
+function insertRegistrosQuery($con, $tipo_registro, $id_plan, $url)
+{
+    $sql = "INSERT INTO public.registros_x_planeacion(
+    id_tipo_registro, tipo_registro, id_planeacion, url)
+    VALUES (nextval('seq_tipo_registro'), $tipo_registro, $id_plan, '$url');";
+
+    return insertQuery($con, $sql);
 }

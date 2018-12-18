@@ -35,12 +35,13 @@
 
       <li class="nav-item">
         <div class="imgProfile">
-          <img class="" src="img/ic4qgE7.png" alt="">
+          <img class="" src="img/user.jpg" alt="">
           <div class="profileDropdown">
           </div>
         </div>
         <a class="nav-link" href="iniciarSesion.html"><i class="fas fa-home"></i></a>
         <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>
+        <a class="nav-link" href="informes.html"><i class="fas fa-chart-line"></i></a>
       </li>
     </ul>
 
@@ -53,13 +54,13 @@
               <ol class="breadcrumb">
               </ol>
             </nav>
-            <a id="returnMunicipio" class="returnBtn showNone" class="btn btn-success" onClick="returnMunicipio(this)">
+            <a id="returnMunicipio" class="returnBtn showNone" class="btn btn-success" onClick="returnMunicipio()">
               <i class="fas fa-arrow-circle-left arrow"></i>
             </a>
-            <a id="returnFocalizacion" class="returnBtn showNone" class="btn btn-success" onClick="returnFocalizacion(this)">
+            <a id="returnFocalizacion" class="returnBtn showNone" class="btn btn-success" onClick="returnFocalizacion()">
                 <i class="fas fa-arrow-circle-left arrow"></i>
             </a>
-            <a id="returnZona" class="returnBtn showNone" class="btn btn-success" onClick="returnZona(this)">
+            <a id="returnZona" class="returnBtn showNone" class="btn btn-success" onClick="returnZona()">
               <i class="fas fa-arrow-circle-left arrow"></i>
             </a>
           </div>
@@ -70,13 +71,13 @@
             </div>
           </div>
 
-          <div class="zonas showNone homeCard"></div>
+          <div class="zonas showNone homeCard" id="zonas"></div>
 
-          <div class="municipios showNone homeCard"></div>
+          <div class="municipios showNone homeCard" id="municipios"></div>
 
-          <div class="focalizaciones showNone homeCard"></div>
+          <div class="focalizaciones showNone homeCard" id="focalizaciones"></div>
 
-          <div class="planeaciones showNone animated homeCard">
+          <div class="planeaciones showNone animated homeCard" id="planeaciones">
           </div>
         </div>
 

@@ -125,6 +125,21 @@ body {
   max-height: 100%;
 }
 
+#rowInvitado {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#btnIngresarInvitado {
+  border-radius: 0px;
+  background-color: cadetblue;
+}
+
+#btnIngresarInvitado:hover {
+  background-color: #777;
+}
+
 #imgBienvenida {
   height: 100%;
   padding: 40px 35px 0px 35px;
@@ -350,17 +365,17 @@ a {
   margin: 10px;
 }
 
-.checkbox-card .custom-control-label::before{
+.checkbox-card .custom-control-label::before {
   top: 0%;
   height: 100%;
   width: 1.5rem;
 }
 
-.checkbox-card ul{
+.checkbox-card ul {
   margin: 0;
 }
 
-.checkbox-card .custom-checkbox{
+.checkbox-card .custom-checkbox {
   width: 100%;
 }
 
@@ -372,7 +387,7 @@ a {
   padding: 0px 5px 0px 0px;
 }
 
-.custom-control-label::before{
+.custom-control-label::before {
   background-color: white;
 }
 
@@ -1032,11 +1047,22 @@ main {
   text-transform: uppercase;
 }
 
+/* INFORMES */
+
+div#chart1 {
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 7px;
+}
+
+/*  */
+
 #formCrearContacto #correoContacto {
   text-transform: lowercase;
 }
 
-.input-group-append button{
+.input-group-append button {
   border-color: transparent;
 }
 

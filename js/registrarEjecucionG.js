@@ -313,13 +313,15 @@ function insertEjecucion() {
     data: `${$("#ejecForm").serialize()}&id_plan=${id_plan}`,
     dataType: "json",
     success: function(response) {
-      swal({
-        type: "success",
-        title: response.message
-      }).then(function() {
-        $(".loader").fadeOut();
-        window.location.href = $('#homeBtn').attr('href');
-      });
+      if(!validarRegistros()){
+        swal({
+          type: "success",
+          title: response.message
+        }).then(function() {
+          $(".loader").fadeOut();
+          window.location.href = $('#homeBtn').attr('href');
+        });
+      }
     }
   });
 }
