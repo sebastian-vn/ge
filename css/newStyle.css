@@ -64,7 +64,7 @@ body {
   width: 15em;
 }
 
-.imgSesion > .row {
+.imgSesion>.row {
   justify-content: center;
   padding: 0px 36px 0px 36px;
   height: 100%;
@@ -74,12 +74,12 @@ body {
   height: 19%;
 }
 
-.imgSesion > .row > img {
+.imgSesion>.row>img {
   max-width: 100%;
   max-height: 60%;
 }
 
-#imgBienvenida > img {
+#imgBienvenida>img {
   max-width: 100%;
 }
 
@@ -96,16 +96,16 @@ body {
   border-radius: 2rem;
 }
 
-.form-label-group > .form-control {
+.form-label-group>.form-control {
   height: calc(2.25rem + 7px);
 }
 
-.form-label-group > input,
-.form-label-group > label {
+.form-label-group>input,
+.form-label-group>label {
   padding: var(--input-padding-y) var(--input-padding-x);
 }
 
-.form-label-group > label {
+.form-label-group>label {
   position: absolute;
   top: -22px;
   left: 0;
@@ -120,9 +120,24 @@ body {
   transition: all 0.1s ease-in-out;
 }
 
-#imgBienvenida > img {
+#imgBienvenida>img {
   max-width: 100%;
   max-height: 100%;
+}
+
+#rowInvitado {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#btnIngresarInvitado {
+  border-radius: 0px;
+  background-color: cadetblue;
+}
+
+#btnIngresarInvitado:hover {
+  background-color: #777;
 }
 
 #imgBienvenida {
@@ -155,7 +170,7 @@ body {
   padding-bottom: calc(var(--input-padding-y) / 3);
 }
 
-.form-label-group input:not(:placeholder-shown) ~ label {
+.form-label-group input:not(:placeholder-shown)~label {
   padding-top: calc(var(--input-padding-y) / 3);
   padding-bottom: calc(var(--input-padding-y) / 3);
   font-size: 12px;
@@ -260,13 +275,13 @@ a {
 }
 
 .imgProfile {
-  border-radius: 50%;
+  border-radius: 50px;
   background-color: #777;
-  max-width: 40px;
+  max-width: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
+  height: auto;
   align-self: center;
   margin: 0.5rem 1rem;
   cursor: pointer;
@@ -320,7 +335,7 @@ a {
   font-size: 2em;
 }
 
-.profileDropdown > h6 {
+.profileDropdown>h6 {
   width: 100%;
   background-color: rgb(4, 158, 0);
   border-radius: 5px 5px 0px 0px;
@@ -334,13 +349,52 @@ a {
   transition: 0.3s;
 }
 
-#modalEventsCalendar > .modal-dialog {
+#modalEventsCalendar>.modal-dialog {
   width: 50%;
   max-width: 100%;
 }
 
 #modalEventDescription {
   font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#modalEventDescription #left {
+  width: 48%;
+  border-right: solid 1px gainsboro;
+}
+
+#modalEventDescription #right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.planeado {
+  width: 100% !important;
+  border: 0px !important;
+}
+
+#modalEventDescription #right>div {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-self: start;
+  align-items: center;
+  width: 100%;
+  margin-top: 25px;
+}
+
+#right .row {
+  width: 100%;
+  justify-content: space-between;
+}
+
+#requisitosPlan {
+  width: 100%;
 }
 
 .checkbox-card {
@@ -350,17 +404,17 @@ a {
   margin: 10px;
 }
 
-.checkbox-card .custom-control-label::before{
+.checkbox-card .custom-control-label::before {
   top: 0%;
   height: 100%;
   width: 1.5rem;
 }
 
-.checkbox-card ul{
+.checkbox-card ul {
   margin: 0;
 }
 
-.checkbox-card .custom-checkbox{
+.checkbox-card .custom-checkbox {
   width: 100%;
 }
 
@@ -372,11 +426,11 @@ a {
   padding: 0px 5px 0px 0px;
 }
 
-.custom-control-label::before{
+.custom-control-label::before {
   background-color: white;
 }
 
-.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
   background-color: #269226;
 }
 
@@ -420,7 +474,7 @@ a {
   padding: 0px 5px 0px 5px;
 }
 
-#modoSeguimiento > label {
+#modoSeguimiento>label {
   margin-top: 0px;
 }
 
@@ -444,15 +498,15 @@ a {
   color: #218838 !important;
 }
 
-#logOut > a:hover {
+#logOut>a:hover {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.imgProfile > img {
+.imgProfile>img {
   max-width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: 50px;
 }
 
 .direccionCharacters {
@@ -508,7 +562,7 @@ a {
   justify-content: center !important;
 }
 
-.header > h1 {
+.header>h1 {
   padding: 8px 0px 0px 0px;
 }
 
@@ -598,7 +652,7 @@ button.btn.btn-outline-secondary.border-left-0:hover {
   background-color: #504e4e;
 }
 
-.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+.custom-radio .custom-control-input:checked~.custom-control-label::before {
   background-color: #2cd114;
 }
 
@@ -706,8 +760,8 @@ hr.hrForm {
   width: 100% !important;
 }
 
-#detalleCardContentGI > .row,
-#detalleCardContentGF > .row {
+#detalleCardContentGI>.row,
+#detalleCardContentGF>.row {
   padding: 0px 30px;
 }
 
@@ -734,7 +788,7 @@ hr.hrForm {
   padding: 20px 0px 10px 20px;
 }
 
-#headerModalTAdmin > i {
+#headerModalTAdmin>i {
   font-size: 4em;
   color: white;
   margin-bottom: 10px;
@@ -757,7 +811,7 @@ hr.hrForm {
   transition: 0.3s;
 }
 
-#divNoEjecucionDad > div > label {
+#divNoEjecucionDad>div>label {
   color: black;
   margin-top: 10px;
 }
@@ -868,6 +922,7 @@ hr {
 
 #navGE .nav-item {
   display: flex;
+  align-items: center;
 }
 
 .nav-item .fas {
@@ -885,6 +940,7 @@ hr {
   height: 60px;
   width: 60px;
 }
+
 /*  */
 
 #calendar {
@@ -902,7 +958,7 @@ main {
 }
 
 .content {
-  height: 93.8%;
+  height: calc(100% - 60px);
 }
 
 #leftPortion {
@@ -933,8 +989,8 @@ main {
   width: 100%;
 }
 
-.content > .row,
-.contentLogIn > .row {
+.content>.row,
+.contentLogIn>.row {
   height: 100%;
   width: 100%;
   margin: 0%;
@@ -944,7 +1000,7 @@ main {
   width: auto;
 }
 
-.contentLogIn > .row {
+.contentLogIn>.row {
   padding: 0% !important;
 }
 
@@ -992,7 +1048,7 @@ main {
   border-radius: 10px;
 }
 
-.homeCard > div {
+.homeCard>div {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -1003,7 +1059,7 @@ main {
   width: 100%;
 }
 
-.nav-item > h3 {
+.nav-item>h3 {
   margin: 0;
 }
 
@@ -1032,11 +1088,22 @@ main {
   text-transform: uppercase;
 }
 
+/* INFORMES */
+
+div#chart1 {
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 7px;
+}
+
+/*  */
+
 #formCrearContacto #correoContacto {
   text-transform: lowercase;
 }
 
-.input-group-append button{
+.input-group-append button {
   border-color: transparent;
 }
 
@@ -1082,12 +1149,12 @@ main {
   animation: animate 1s linear infinite;
 }
 
-.pulse > img {
+.pulse>img {
   width: 65%;
   height: 65%;
 }
 
-#loaderCalendar > .pulse {
+#loaderCalendar>.pulse {
   animation: animate2 1s linear infinite;
 }
 
@@ -1095,12 +1162,15 @@ main {
   0% {
     box-shadow: 0 0 0 0 rgba(255, 255, 254, 0.3);
   }
+
   40% {
     box-shadow: 0 0 0 50px rgba(255, 255, 254, 0);
   }
+
   80% {
     box-shadow: 0 0 0 50px rgba(255, 255, 254, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(255, 255, 254, 0);
   }
@@ -1110,12 +1180,15 @@ main {
   0% {
     box-shadow: 0 0 0 0 rgba(10, 124, 7, 0.3);
   }
+
   40% {
     box-shadow: 0 0 0 50px rgba(10, 124, 7, 0);
   }
+
   80% {
     box-shadow: 0 0 0 50px rgba(10, 124, 7, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(10, 124, 7, 0);
   }
@@ -1172,7 +1245,7 @@ main {
     height: auto;
   }
 
-  #coordinadoraInt > img {
+  #coordinadoraInt>img {
     width: 90%;
   }
 
@@ -1183,6 +1256,7 @@ main {
 }
 
 @media screen and (min-width: 993px) and (max-width: 1171px) {
+
   #intervencion,
   #planeacion,
   #ejecucion {
@@ -1243,7 +1317,7 @@ main {
     opacity: 0.2;
   }
 
-  #coordinadoraInt > img {
+  #coordinadoraInt>img {
     width: 90%;
   }
 

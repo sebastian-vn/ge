@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+
+<body>
+  <div id="container" style="min-width: 300px; max-width: 800px;  height: 500px; margin: 1em auto;"></div>
+  <div class="input-field col s12">
+    <select id="option" onchange="getCoberturaMunicipio();">
+      <option value="" disabled>Choose your option</option>
+      <option value="1" selected>Pie</option>
+      <option value="2">Circular</option>
+      <option value="3">Barras</option>
+    </select>
+    <select id="filtros" onchange="getCoberturaMunicipio();">
+      <option value="" disabled>Choose your option</option>
+      <option value="municipio" selected>Municipio</option>
+      <option value="entidad">Entidad</option>
+      <option value="estrategia">Estrategia</option>
+      <option value="zonas">Zona</option>
+      <option value="tipo_poblacion">Tipo de poblacion</option>
+      <option value="competencia_comportamiento">Competencia - Comportamiento</option>
+      <option value="gestor">Gestor</option>
+    </select>
+  </div>
+
+  <script src="js/includes/jquery-3.2.1.min.js"></script>
+  <script src="js/includes/jquery-ui.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/variable-pie.js"></script>
+  <script src="https://code.highcharts.com/js/highcharts.js"></script>
+  <script src="https://code.highcharts.com/js/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="js/informe.js"></script>
+
+</body>
+
+</html>

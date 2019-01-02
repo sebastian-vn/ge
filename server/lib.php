@@ -32,8 +32,6 @@ class gestionEducativa
 
     }
 
-
-
     public function getComportamientos()
     {
         return getComportamientosQuery($this->con);
@@ -99,9 +97,9 @@ class gestionEducativa
         return getPlaneacionesXFocalizacionQuery($this->con, $foc);
     }
 
-    public function getPlaneacionesCalendar($plan_ejec)
+    public function getPlaneacionesCalendar()
     {
-        return getPlaneacionesCalendarQuery($this->con, $plan_ejec);
+        return getPlaneacionesCalendarQuery($this->con);
     }
 
     public function getDetallePlaneacionEjecucion($id_plan)
@@ -154,9 +152,9 @@ class gestionEducativa
         return insertEntidadQuery($this->con, $nombre, $direccion, $telefono, $tipoEntidad, $municipio);
     }
 
-    public function insertPlaneacion($jornada, $lugar_encuentro, $id_barrio, $id_vereda, $id_entidad, $fecha_plan, $fecha_registro, $id_foc)
+    public function insertPlaneacion($jornada, $lugar_encuentro, $id_barrio, $id_vereda, $id_entidad, $fecha_plan, $fecha_registro, $id_foc, $estado)
     {
-        return insertPlaneacionQuery($this->con, $jornada, $lugar_encuentro, $id_barrio, $id_vereda, $id_entidad, $fecha_plan, $fecha_registro, $id_foc);
+        return insertPlaneacionQuery($this->con, $jornada, $lugar_encuentro, $id_barrio, $id_vereda, $id_entidad, $fecha_plan, $fecha_registro, $id_foc, $estado);
     }
 
     public function insertContactosXEntidad($cedula, $entidad)
@@ -229,10 +227,58 @@ class gestionEducativa
         return getSubtemasXTemaQuery($this->con, $id_tema);
     }
 
-    public function getUserRol($name)
+    public function getMunicipioInforme()
     {
-        return getUserRolQuery($this->con, $name);
+        return getMunicipioInformeQuery($this->con);
     }
 
-    
+    public function getUserRol()
+    {
+        return getUserRolQuery($this->con);
+    }
+
+    public function getPlaneacionesGeoApp($zona)
+    {
+        return getPlaneacionesGeoAppQuery($this->con, $zona);
+    }
+
+    public function insertRegistros($tipo_registro, $id_plan, $url)
+    {
+        return insertRegistrosQuery($this->con, $tipo_registro, $id_plan, $url);
+    }
+
+    public function getInformes()
+    {
+        return getInformesQuery($this->con);
+    }
+
+    public function getEtapaPlaneacion($id_plan)
+    {
+        return getEtapaPlaneacionQuery($this->con, $id_plan);
+    }
+
+    public function updateEstadoPlaneacion($estado, $id_plan)
+    {
+        return updateEstadoPlaneacionQuery($this->con, $estado, $id_plan);
+    }
+
+    public function insertGeoLocation($lat, $long, $fecha, $hora, $id_plan, $etapa_plan)
+    {
+        return insertGeoLocationQuery($this->con, $lat, $long, $fecha, $hora, $id_plan, $etapa_plan);
+    }
+
+    public function checkFocalizacion($id_mun, $comp, $tipo)
+    {
+        return checkFocalizacionQuery($this->con, $id_mun, $comp, $tipo);
+    }
+
+    public function ejecucion_planeacion($id_plan)
+    {
+        return ejecucion_planeacionQuery($this->con, $id_plan);
+    }
+
+    public function checkRegistros($id_plan)
+    {
+        return checkRegistrosQuery($this->con, $id_plan);
+    }
 }

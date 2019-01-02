@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   /* Functions */
   executeAll();
   determineTipoGestion();
@@ -6,32 +6,41 @@ $(document).ready(function() {
   checkLogged();
 
   if (
-    $("select").change(function() {
+    $("select").change(function () {
       if ($(this).hasClass("invalid")) {
         $(this).removeClass("invalid");
       }
     })
   );
 
-  $("input[name=tipoGestion]").change(function() {
+  $("input[name=tipoGestion]").change(function () {
     determineTipoGestion();
   });
 
-  $("#submitInstit").click(function(event) {
+  $("#submitInstit").click(function (event) {
     event.preventDefault();
     swal({
       type: "warning",
       title: "Gestión Institucional",
-      text:
-        "Vas a registrar una focalización de gestión institucional, ¿Seguro?"
-    }).then(function() {
+      text: "Vas a registrar una focalización de gestión institucional, ¿Seguro?"
+    }).then(function () {
       insertFocalizacion();
     });
   });
 });
 
-$("#selectComportamiento").change(function() {
-  getIndicadoresChec(this.value);
+$("#selectComportamiento").change(function () {
+  let tipo = $('#selectTipoInt').val();
+  if(tipo != ""){
+    checkFocalizacion(this.value, tipo);    
+  }
+});
+
+$("#selectTipoInt").change(function () {
+  let tipo = $('#selectComportamiento').val();
+  if(tipo != ""){
+    checkFocalizacion(tipo, this.value);    
+  }
 });
 
 var id_zona = getParam("id_zona");
@@ -41,9 +50,9 @@ function getParam(param) {
   param = param.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
   var results = regex.exec(location.search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null ?
+    "" :
+    decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -150,8 +159,7 @@ select=name of html tag, data= name of query that will be in POST parameter
  */
 function executeAll() {
   /* Define array of objects with values to replace */
-  var ajaxJson = [
-    {
+  var ajaxJson = [{
       select: "selectMunicipio",
       url: "server/getMunicipios.php",
       data: {
@@ -176,24 +184,16 @@ function primaryAjax(tag, url, dat) {
     url: url,
     data: dat,
     dataType: "json"
-  }).done(function(data) {
+  }).done(function (data) {
     data.forEach(element => {
       var elementArray = Object.values(element); // Converts objects to array
 
       if (tag == "selectMunicipio") {
-        //Get id_mun to preselect municipio
-        if (id_mun == elementArray[0]) {
-          $(`#${tag}`).append(
-            `<option value="${elementArray[0]}" selected>${
-              elementArray[1]
-            }</option>`
-          );
-        }
-
         // Object from selectMunicipio has only 2 keys
         $(`#${tag}`).append(
           `<option value="${elementArray[0]}">${elementArray[1]}</option>`
         );
+
       } else {
         // This object has more than 2, for that is required to add another element
         $(`#${tag}`).append(
@@ -202,6 +202,9 @@ function primaryAjax(tag, url, dat) {
           }</option>`
         );
       }
+
+      $('#selectMunicipio').val(id_mun);
+
     });
   });
 }
@@ -215,7 +218,7 @@ function getIndicadoresChec(comportamiento) {
       comportamiento: comportamiento
     },
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       response.forEach(data => {
         $("#selectIndicadorInt").append(
           `<option value="${data.id_indicador}">${data.indicador}</option>`
@@ -233,23 +236,23 @@ function insertFocalizacion() {
     url: "server/insertFocalizacion.php",
     data: formData,
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       if ($("#selectIndicadorInt").val().length > 0) {
         insertIndicadoresXFocalizacion();
       } else {
-        if(response.error == 0){
+        if (response.error == 0) {
           swal({
             type: "success",
             title: response.message
-          }).then(function() {
+          }).then(function () {
             $(".loader").fadeOut();
             window.location.href = $('#homeBtn').attr('href');
           });
-        }else{
+        } else {
           swal({
             type: "error",
             title: response.message
-          }).then(function() {
+          }).then(function () {
             $(".loader").fadeOut();
             location.reload();
           });
@@ -265,22 +268,22 @@ function insertIndicadoresXFocalizacion() {
     url: "server/insertIndicadores.php",
     data: "",
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       id_foc = response[0].max;
       formData = $("#intForm").serializeArray();
       $.ajax({
         type: "POST",
         url: "server/insertIndicadores.php",
         data: {
-          indicadores : $("#selectIndicadorInt").val(),
+          indicadores: $("#selectIndicadorInt").val(),
           id_foc: id_foc
         },
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
           swal({
             type: "success",
-            title: response
-          }).then(function() {
+            title: response.message
+          }).then(function () {
             $(".loader").fadeOut();
             window.location.href = $('#homeBtn').attr('href');
           });
@@ -298,17 +301,43 @@ function checkLogged() {
       zona: id_zona
     },
     dataType: "json"
-  }).done(function(data) {
+  }).done(function (data) {
     if (data.error) {
       swal({
         type: "info",
         title: "Usuario",
         text: data.message
-      }).then(function() {
+      }).then(function () {
         window.location.href = "iniciarSesion.html";
       });
     } else {
       $('#homeBtn').attr('href', `home.html?user=${data.rol}&id_zona=${data.zona}`);
+    }
+  });
+}
+
+function checkFocalizacion(compor, tipo) {
+  $.ajax({
+    type: "POST",
+    url: "server/checkFocalizacion.php",
+    data: {
+      id_mun: id_mun,
+      comportamiento: compor,
+      tipoFocalizacion: tipo
+    },
+    dataType: "json",
+    success: function (response) {
+      if (!response.error) {
+        swal({
+          type: 'warning',
+          title: 'Oops',
+          text: response.message
+        });
+        $('#nextBtn').prop("disabled", true);
+      } else {
+        getIndicadoresChec(compor);
+        $('#nextBtn').prop("disabled", false);
+      }
     }
   });
 }

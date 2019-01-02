@@ -19,6 +19,7 @@ if (isset($_POST)) {
         $lugarEncuentro = $_POST['lugarEncuentro'];
         $entidad = $_POST['entidad'];
         $id_foc = $_POST['id_foc'];
+        $estado = "Planeado";
     }
 
     if (!empty($_POST['vereda'])) {
@@ -34,7 +35,7 @@ if (isset($_POST)) {
     }
 
     $json = $api->insertPlaneacion($jornada, $lugarEncuentro, $barrio,
-        $vereda, $entidad, $fechaPlan, $fechaReg, $id_foc);
+        $vereda, $entidad, $fechaPlan, $fechaReg, $id_foc, $estado);
 
 } else {
     $json = 'No se recibieron adecuadamente los datos.';

@@ -6,7 +6,7 @@ $(function() {
 	getCaracteristicasPoblacion();
 
   /*Extrae los parametros que llegan en la url
-	 * parametro: 
+	 * parametro:
 	 */
   $.get = function(key) {
     key = key.replace(/[\[]/, "\\[");
@@ -31,7 +31,7 @@ $(function() {
 	cargarDatosPlaneacion();
 
 	lista_asistentes = [];
-	
+
   var table_asistentes = $("#tabla-asistente").dataTable({
 		data: lista_asistentes,
     columnDefs: [
@@ -58,7 +58,7 @@ $(function() {
 		select: false,
 		info: false
 	});
-	
+
   var table_caracteristicas = $("#tabla-caracteristica").dataTable({
 		data: lista_asistentes,
     columnDefs: [
@@ -85,8 +85,8 @@ $(function() {
 		select: false,
 		info: false
 	});
-	
-	
+
+
 
   var table = $("#ejecucion_coordinadora_asistencia").DataTable({
     data: arrayAsistentes,
@@ -206,7 +206,7 @@ $(function() {
 
 function bindEvents() {
   /*Dependiendo si seleccionan si cuenta con algun contacto
-	 * parametro: 
+	 * parametro:
 	 */
   $("#radiosAlgunContacto input:radio").click(function() {
     //si contacto
@@ -218,7 +218,7 @@ function bindEvents() {
   });
 
   /*el detalle cumplimiento
-	 * parametro: 
+	 * parametro:
 	 */
   $("#detalleNivelCumplimiento input:radio").click(function() {});
 
@@ -242,7 +242,7 @@ function bindEvents() {
 }
 
 /*Consulta el nombre de la persona que inicio sesión
- * parametro: 
+ * parametro:
  */
 function traerNombre() {
   $.post(
@@ -285,6 +285,7 @@ function cargarDatosPlaneacion() {
           $("#estrategiaInd").html(data.html.estrategia);
           $("#tacticoInd").html(data.html.tactico);
           $("#indicadoresInd").html(data.html.indicador);
+          $("#temaInd").html(data.html.tema);
 
           //datos de la ejecucion registrada
           let valor = data.html.datosEjec.horafinalizacion.split(":");
@@ -320,6 +321,55 @@ function cargarDatosPlaneacion() {
           var table = $("#ejecucion_coordinadora_asistencia");
           table.dataTable().fnClearTable();
           table.dataTable().fnAddData(data.html.datosEjec.asistentes);
+
+          $('.input_caract').prop("disabled", true);
+					$('.input_cant').prop("disabled", true);
+
+					if(data.html.datosEjec.tipo_poblacion != ""){
+						let cant_tpo = data.html.datosEjec.tipo_poblacion;
+						$('#inputcantidad1').val(data.html.datosEjec.tipo_poblacion[0].tppe_cantidadpoblacion);
+						$('#inputcantidad2').val(data.html.datosEjec.tipo_poblacion[1].tppe_cantidadpoblacion);
+						$('#inputcantidad3').val(data.html.datosEjec.tipo_poblacion[2].tppe_cantidadpoblacion);
+
+						let total = 0;
+						cant_tpo.forEach(element => {
+							total += element.tppe_cantidadpoblacion;
+
+						});
+
+						$('#total').text(total);
+					}
+
+					if(data.html.datosEjec.carac_poblacion != ""){
+						let cant_cpo = data.html.datosEjec.carac_poblacion;
+						$('#caracteristica1').val(data.html.datosEjec.carac_poblacion[0].cantidad);
+						$('#caracteristica2').val(data.html.datosEjec.carac_poblacion[1].cantidad);
+						$('#caracteristica3').val(data.html.datosEjec.carac_poblacion[2].cantidad);
+						$('#caracteristica4').val(data.html.datosEjec.carac_poblacion[3].cantidad);
+						$('#caracteristica5').val(data.html.datosEjec.carac_poblacion[4].cantidad);
+
+						let total = 0;
+						cant_cpo.forEach(element => {
+							total += element.cantidad;
+						});
+
+						$('#total-genero').text(total);
+          }
+          
+          if(data.html.datosEjec.adjuntos != ""){
+						let adjuntos = data.html.datosEjec.adjuntos
+						adjuntos.forEach(element => {
+							let name = element.urlarchivoadjunto.split("/");
+
+							$('#showAdjuntos ul').append(
+								`<li><a href="${element.urlarchivoadjunto}">${name[2]}</a></li>`
+							);
+						});
+					}else{
+						$('#showAdjuntos').html(
+							`No se adjuntaron archivos`
+						);
+					}
 
           $(".esconder, #button2id").hide();
           $("#button1id")
@@ -388,7 +438,7 @@ function guardarEjecucion() {
       "error"
     );
 		}
-    
+
   } else {
 		//detalleNivelCumplimiento
 		var list_tipopoblacion = [];
@@ -401,7 +451,7 @@ function guardarEjecucion() {
 
 		$.each($('.input_caract'), function(){
 			list_caracteristica.push($(this).val());
-		});	
+		});
 
     var list = [];
 
@@ -583,7 +633,7 @@ function validarInformacion() {
   } else {
     valido = false;
 	}
-	
+
 	if(parseInt($("#total-genero").text()) != parseInt($("#total").text())){
 		valido = false;
 		mensaje = "El total de tipo de población no coincide con el total de las características de la población.";
@@ -693,7 +743,7 @@ function guardarAsistencia() {
 }
 
 /*Dependiendo si seleccionan si cuenta con algun contacto
- * parametro: 
+ * parametro:
  */
 $("#radiosContacto input:radio").click(function() {
   if ($(this).val() === "1") {
@@ -749,7 +799,7 @@ function getCaracteristicasPoblacion() {
 		}
 		$(".input_caract").change(function() {
 			getCaracteristicas();
-		});		
+		});
 	}, "json");
 }
 
@@ -780,7 +830,7 @@ function getCaracteristicas() {
     }
   }
   asist +=
-		parseInt($("#caracteristica1").val()) + parseInt($("#caracteristica2").val()) + 
+		parseInt($("#caracteristica1").val()) + parseInt($("#caracteristica2").val()) +
 		parseInt($("#caracteristica3").val()) + parseInt($("#caracteristica4").val()) + parseInt($("#caracteristica5").val());
 
   $("#total-genero").text(asist);

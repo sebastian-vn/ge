@@ -1,5 +1,6 @@
-$(function() {
+$(function () {
   checkLogged();
+  getPlaneacionesHoy();
 
   $("#datepicker").datepicker({
     locale: "es-es",
@@ -7,7 +8,7 @@ $(function() {
     format: "dd-mm-yyyy"
   });
 
-  $(".imgProfile img").click(function() {
+  $(".imgProfile img").click(function () {
     if ($(".profileDropdown").hasClass("activeProfile")) {
       $(".profileDropdown").removeClass("activeProfile");
     } else {
@@ -15,22 +16,22 @@ $(function() {
     }
   });
 
-  if(user == 3 || user == "Gestor"){
-    $('#rightPortion').html(
+  if (user == 3 || user == "Gestor") {
+    $("#rightPortion").html(
       `<div class="center" id="loaderCalendar">
         <div class="pulse">
           <img src="img/logo-min.png" alt="">
         </div>
       </div>
       <div id="calendar"></div>`
-    )
+    );
   }
 
-  $("#logOut a").click(function() {
+  $("#logOut a").click(function () {
     $("#logOut").submit();
   });
 
-  $("#btnCancelarTAdmin").click(function() {
+  $("#btnCancelarTAdmin").click(function () {
     $("#modalTAdmin").modal("toggle");
   });
 });
@@ -38,7 +39,7 @@ $(function() {
 var id_zona = getParam("id_zona");
 let id_plan = getParam("id_plan");
 let id_foc = getParam("id_foc");
-let user = getParam("user")
+let user = getParam("user");
 
 if (id_zona == "all") {
   getZona();
@@ -50,9 +51,9 @@ function getParam(param) {
   param = param.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
   var results = regex.exec(location.search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null ?
+    "" :
+    decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 function getZona() {
@@ -61,7 +62,7 @@ function getZona() {
     url: "server/getZonas.php",
     data: "",
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       response.forEach(element => {
         $(".zonas").append(
           ` <div>
@@ -73,27 +74,28 @@ function getZona() {
                   <h5 class="card-title">Gestor: ${element.nombre}</h5>
                 </div>
               </div>
-              <a onClick="getMunicipioXZona(${
-                element.id_zona
-              })"><i class="fas fa-arrow-circle-right arrow"></i></a>
+              <a onClick="getMunicipioXZona(${element.id_zona}, '${element.zonas}')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
         );
       });
     },
-    complete: function() {
+    complete: function () {
       $(".zonas").fadeIn();
       $(".zonas").removeClass("showNone");
       $("#homeBreadCrumbs").removeClass("showNone");
       $("#loaderList").fadeOut();
+      determineRtnBtn();
     }
   });
 }
 
-function getMunicipioXZona(zona) {
+function getMunicipioXZona(zona, nombre_zona) {
   $(".zonas").fadeOut();
   $(".zonas").addClass("showNone");
   $(".municipios").html("");
   $("#loaderList").fadeIn();
+  determineBreadcrumb("zona", nombre_zona);
+
   if (zona == "all") zona = id_zona;
   $.ajax({
     type: "POST",
@@ -102,7 +104,7 @@ function getMunicipioXZona(zona) {
       zona: zona
     },
     dataType: "json",
-    success: function(data) {
+    success: function (data) {
       data.forEach(element => {
         $(".municipios").append(
           ` <div>
@@ -124,20 +126,12 @@ function getMunicipioXZona(zona) {
               </div>
               <a href="#${element.municipio}" onClick="getFocalizacionesXZona(${
             element.id_municipio
-          }, '${element.municipio}', '${
-            element.zonas
-          }')"><i class="fas fa-arrow-circle-right arrow"></i></a>
+          }, '${element.municipio}')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
         );
       });
-      $(".breadcrumb").html("");
-      $(".breadcrumb").append(
-        `<li class="breadcrumb-item"><a href="#" onclick="returnMunicipio()">${
-          data[0].zonas
-        }</a></li>`
-      );
     },
-    complete: function() {
+    complete: function () {
       if (!$(".zona").hasClass("showNone")) {
         $(".zonas").fadeOut();
         $(".zonas").addClass("showNone");
@@ -148,24 +142,15 @@ function getMunicipioXZona(zona) {
       $(".municipios").removeClass("showNone");
       $("#homeBreadCrumbs").removeClass("showNone");
       $("#loaderList").fadeOut();
+      determineRtnBtn();
     }
   });
 }
 
-function getFocalizacionesXZona(mun, municipio, zona) {
+function getFocalizacionesXZona(mun, nom_mun) {
   $("#loaderList").fadeIn();
   $(".municipios").fadeOut();
-  $("#returnMunicipio").removeClass("showNone");
-  //if returns and does not have showNoneClass
-  if (!$("#returnFocalizaciones").hasClass("showNone")) {
-    $("#returnFocalizaciones").addClass("showNone");
-  }
-
-  $(".breadcrumb").html("");
-  $(".breadcrumb").append(
-    `<li class="breadcrumb-item"><a href="#" onclick="returnMunicipio()">${zona}</a></li>
-    <li class="breadcrumb-item"><a href="#">${municipio}</a></li>`
-  );
+  determineBreadcrumb("municipio", nom_mun);
 
   $.ajax({
     type: "POST",
@@ -174,7 +159,7 @@ function getFocalizacionesXZona(mun, municipio, zona) {
       municipio: mun
     },
     dataType: "json",
-    success: function(data) {
+    success: function (data) {
       $(".focalizaciones").html("");
       data.forEach(element => {
         if (element.id_tipo_gestion == 2) {
@@ -195,7 +180,7 @@ function getFocalizacionesXZona(mun, municipio, zona) {
               </div>
               <a onclick="getPlaneacionesXFocalizacion(${
                 element.id_focalizacion
-              })"><i class="fas fa-arrow-circle-right arrow"></i></a>
+              }, 'Gestión Institucional')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
           );
         } else {
@@ -223,25 +208,28 @@ function getFocalizacionesXZona(mun, municipio, zona) {
               element.competencia
             }" onclick="getPlaneacionesXFocalizacion(${
               element.id_focalizacion
-            })"><i class="fas fa-arrow-circle-right arrow"></i></a>
+            }, '${
+              element.competencia
+            }')"><i class="fas fa-arrow-circle-right arrow"></i></a>
             </div>`
           );
         }
       });
     },
-    complete: function() {
+    complete: function () {
       $(".focalizaciones").fadeIn();
       $(".focalizaciones").removeClass("showNone");
+      $(".municipios").addClass("showNone");
       $("#loaderList").fadeOut();
+      determineRtnBtn();
     }
   });
 }
 
-function getPlaneacionesXFocalizacion(foc) {
+function getPlaneacionesXFocalizacion(foc, comp) {
   $("#loaderList").fadeIn();
   $(".focalizaciones").fadeOut();
-  $("#returnFocalizacion").removeClass("showNone");
-  $("#returnMunicipio").addClass("showNone");
+  determineBreadcrumb("focalizacion", comp);
   $.ajax({
     type: "POST",
     url: "server/getPlaneaciones.php",
@@ -249,7 +237,7 @@ function getPlaneacionesXFocalizacion(foc) {
       foc: foc
     },
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       $(".planeaciones").html("");
       for (var arrayIndex in response) {
         var element = response[arrayIndex];
@@ -277,10 +265,11 @@ function getPlaneacionesXFocalizacion(foc) {
         );
       }
     },
-    complete: function() {
+    complete: function () {
       $("#loaderList").fadeOut();
       $(".planeaciones").fadeIn();
       $(".planeaciones").removeClass("showNone");
+      determineRtnBtn();
     }
   });
 }
@@ -301,13 +290,13 @@ function checkLogged() {
       zona: id_zona
     },
     dataType: "json"
-  }).done(function(data) {
+  }).done(function (data) {
     if (data.error) {
       swal({
         type: "info",
         title: "Usuario",
         text: data.message
-      }).then(function() {
+      }).then(function () {
         window.location.href = "iniciarSesion.html";
       });
     } else {
@@ -326,22 +315,41 @@ function checkLogged() {
 
       $("#pCompleta").bootstrapToggle("off");
 
-      $('#lastSideNav').html(
-        `<a class="nav-link" href="home.html?user=${data.rol}&id_zona=${data.zona}><i class="fas fa-home"></i></a>
+      $("#lastSideNav").html(
+        `<a class="nav-link" href="home.html?user=${data.rol}&id_zona=${
+          data.zona
+        }><i class="fas fa-home"></i></a>
         <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>`
       );
 
-
-      $("#pCompleta").change(function() {
+      $("#pCompleta").change(function () {
         if ($(this).prop("checked")) {
           $("#leftPortion").fadeOut();
           $("#leftPortion").addClass("showNone");
-          $("#rightPortion").switchClass("col-md-6", "col-md-12", 200, "linear");
-          $("#rightPortion").switchClass("col-lg-7", "col-lg-12", 200, "linear");
+          $("#rightPortion").switchClass("col-md-6", "col-md-12",
+            200,
+            "linear"
+          );
+          $("#rightPortion").switchClass(
+            "col-lg-7",
+            "col-lg-12",
+            200,
+            "linear"
+          );
         } else {
           if ($("#leftPortion").hasClass("showNone")) {
-            $("#rightPortion").switchClass("col-md-12", "col-md-6", 200, "linear");
-            $("#rightPortion").switchClass("col-lg-12", "col-lg-7", 200, "linear");
+            $("#rightPortion").switchClass(
+              "col-md-12",
+              "col-md-6",
+              200,
+              "linear"
+            );
+            $("#rightPortion").switchClass(
+              "col-lg-12",
+              "col-lg-7",
+              200,
+              "linear"
+            );
             setTimeout(() => {
               $("#leftPortion").fadeIn();
               $("#leftPortion").removeClass("showNone");
@@ -361,7 +369,7 @@ function insertTAdmin() {
     url: "server/insertTrabajoAdministrativo.php",
     data: $("#formTAdmin").serialize(),
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       insertLaboresXTAdmin();
     }
   });
@@ -373,10 +381,10 @@ function insertLaboresXTAdmin() {
     url: "server/insertTrabajoAdministrativo.php",
     data: "data",
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       id_ta = response[0].max;
       arrayLabores = [];
-      $("input[name=tAdmin]:checked").each(function() {
+      $("input[name=tAdmin]:checked").each(function () {
         arrayLabores.push($(this).val());
       });
       $.ajax({
@@ -387,16 +395,16 @@ function insertLaboresXTAdmin() {
           id_ta: id_ta
         },
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
           swal({
             type: "success",
-            title: response
-          }).then(function() {
+            title: response.message
+          }).then(function () {
             document.getElementById("formTAdmin").reset();
             $("#modalTAdmin").modal("toggle");
           });
         },
-        complete: function() {
+        complete: function () {
           $("#modalLoader").fadeOut();
           $("#modalLoader").addClass("showNone");
           getPlaneacionesCalendar();
@@ -406,26 +414,148 @@ function insertLaboresXTAdmin() {
   });
 }
 
-function returnMunicipio(btn) {
-  $(btn).addClass("showNone");
+function returnMunicipio() {
   $(".focalizaciones").fadeOut();
+  $(".focalizaciones").addClass("showNone");
   $(".municipios").fadeIn();
+  $(".municipios").removeClass("showNone");
+  determineRtnBtn();
+  if ($(".breadcrumb #municipio").length > 0) $(".breadcrumb #municipio").remove();
 }
 
-function returnFocalizacion(btn) {
-  $("#returnMunicipio").removeClass("showNone");
-  $(btn).addClass("showNone");
+function returnFocalizacion() {
   $(".planeaciones").fadeOut();
+  $(".planeaciones").addClass("showNone");
   $(".focalizaciones").fadeIn();
+  determineRtnBtn();
+  if ($(".breadcrumb #focalizacion").length > 0) $(".breadcrumb #focalizacion").remove();
 }
 
-function returnZona(btn) {
+function returnZona() {
   $(".breadcrumb").html("");
-  $("#returnMunicipio").addClass("showNone");
-  $(btn).addClass("showNone");
   $(".municipios").fadeOut();
+  $(".municipios").addClass("showNone");
   $(".zonas").fadeIn();
   $(".zonas").removeClass("showNone");
+  determineRtnBtn();
+  if ($(".breadcrumb #zona").length > 0) $(".breadcrumb #zona").remove();
 }
 
-function determineBreadcrumb() {}
+function determineBreadcrumb(column, name) {
+  switch (column) {
+    case "zona":
+      $(".breadcrumb").html("");
+      $(".breadcrumb").append(
+        `<li class="breadcrumb-item" id="zona"><a href="#" onclick="returnMunicipio()">${name}</a></li>`
+      );
+      break;
+
+    case "municipio":
+      var selector = ".breadcrumb";
+      if ($(".breadcrumb #municipio").length > 0) {
+        selector = ".breadcrumb #municipio";
+      }
+      $(`${selector}`).append(
+        `<li class="breadcrumb-item" id="municipio"><a href="#" onclick="returnFocalizacion()">${name}</a></li>`
+      );
+      break;
+
+    case "focalizacion":
+      var selector = ".breadcrumb";
+      if ($(".breadcrumb #focalizacion").length > 0) {
+        selector = ".breadcrumb #focalizacion";
+      }
+      $(`${selector}`).append(
+        `<li class="breadcrumb-item" id="focalizacion"><a href="#" onclick="">${name}</a></li>`
+      );
+      break;
+    default:
+      break;
+  }
+}
+
+function determineRtnBtn() {
+  var homeCard = document.getElementsByClassName("homeCard");
+  for (i = 0; i < homeCard.length; i++) {
+    classList = homeCard[i].className.split(/\s+/);
+    if (classList.indexOf("showNone") == -1) {
+      var element = homeCard[i].id;
+    }
+  }
+
+  switch (element) {
+    case "municipios":
+      showReturnBtn("returnZona");
+      break;
+
+    case "focalizaciones":
+      showReturnBtn("returnMunicipio");
+      break;
+
+    case "planeaciones":
+      showReturnBtn("returnFocalizacion");
+      break;
+
+    default:
+      showReturnBtn("");
+      break;
+  }
+}
+
+function showReturnBtn(btn) {
+  var rtnbtns = document.getElementsByClassName("returnBtn");
+  for (i = 0; i < rtnbtns.length; i++) {
+    if (rtnbtns[i].id == btn) {
+      if (rtnbtns[i].classList.contains("showNone")) {
+        rtnbtns[i].classList.remove("showNone");
+      }
+    } else if (!rtnbtns[i].classList.contains("showNone")) {
+      rtnbtns[i].classList.add("showNone");
+    }
+  }
+}
+
+function getPlaneacionesHoy(){
+  $.ajax({
+    type: "POST",
+    url: "server/getPlaneaciones.php",
+    data: {
+      geoAppPlan: ''
+    },
+    dataType: "json",
+    success: function (response) {
+      if(response == ""){
+        $('#plan_hoy').html(
+          `<div class="alert alert-warning" role="alert">
+            No hay nada planeado para el día de hoy
+          </div>`
+        )
+      }else{
+        $('#plan_hoy').html('');
+        response.forEach(element => {
+          if(element.estado == 'Planeado'){
+            element.estado = 'Sin iniciar';
+            color = 'grey';
+          }else{
+            color = '#edbe00';
+          }
+          $('#plan_hoy').append(
+            `<div class="card text-center">
+              <div class="card-header">
+                ${element.municipio} - ${element.nombre}
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">${element.comportamientos} - ${element.competencia}</h5>
+                <p class="card-text">${element.nombre_estrategia} (${element.nombre_tactico}) - ${element.temas}</p>
+                <i class="fas fa-minus-circle" style="font-size:2em; color:${color}"></i>
+              </div>
+              <div class="card-footer text-muted">
+                ${element.estado}
+              </div>
+            </div>`
+          );
+        });
+      }
+    }
+  });
+}

@@ -16,37 +16,37 @@ function executeQuery($con, $sql)
 
 function logIn($con, $sql, $pass)
 {
-    if ($result = $con->query($sql)) {
-        if ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    if (empty($sql)) {
+        session_start();
 
-            $pswdCheck = password_verify($pass, $row['passwd']);
-            if ($pswdCheck == false) {
-                header("Location: ../iniciarSesion.html?error=wrgpswd");
-                exit();
-                echo false;
+        $_SESSION['guest'] = array("nombre" => "invitado", "rol" => 4, "zona" => "all");
+        $data = array("error" => 1, "user" => $_SESSION['user']);
+        exit();
+    } else {
+        if ($result = $con->query($sql)) {
+            if ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-            } elseif ($pswdCheck == true) {
-                session_start();
+                $pswdCheck = password_verify($pass, $row['passwd']);
+                if ($pswdCheck == false) {
+                    $data = array("error" => 0, "error_type" => "wrgpswd");
 
-                $_SESSION['user'] = array('uid' => $row['cedula'],
-                    'pass' => $row['passwd'], 'nombre' => $row['nombres'], 'rol' => $row['id_rol'],
-                    'zona' => $row['id_zona']);
+                } elseif ($pswdCheck == true) {
+                    session_start();
 
-                if ($row['id_rol'] != 3) {
+                    $_SESSION['user'] = array('uid' => $row['cedula'],
+                        'pass' => $row['passwd'], 'nombre' => $row['nombres'], 'rol' => $row['id_rol'],
+                        'zona' => $row['id_zona']);
 
-                    header("Location: ../home.html?user=" . $row['id_rol'] . "&id_zona=all");
-                    exit();
-                } else {
+                    $data = array("error" => 1, "user" => $_SESSION['user']);
 
-                    header("Location: ../home.html?user=" . $row['id_rol'] . "&id_zona=" . $row['id_zona'] . "");
-                    exit();
                 }
+            } else {
+                $data = array("error" => 0, "error_type" => "nouser");
             }
-        } else {
-            header("Location: ../iniciarSesion.html?error=nouser");
-            exit();
         }
     }
+
+    return $data;
 }
 
 function insertQuery($con, $sql)
@@ -120,7 +120,8 @@ function getComportamientosQuery($con)
 
 function getFocalizacionesXZonaQuery($con, $mun)
 {
-    $sql = "SELECT foc.id_focalizacion, mun.id_municipio, id_tipo_gestion, mun.municipio, mun.id_zona, compor.id_comportamientos, compor.comportamientos, foc.tipo_focalizacion, foc.fecha, compe.competencia
+    $sql = "SELECT foc.id_focalizacion, mun.id_municipio, id_tipo_gestion, mun.municipio, mun.id_zona, compor.id_comportamientos,
+    compor.comportamientos, foc.tipo_focalizacion, foc.fecha, compe.competencia
     FROM focalizacion foc
     LEFT JOIN indicadores_chec_x_focalizacion icxf ON icxf.id_focalizacion= foc.id_focalizacion
     LEFT JOIN indicadores_chec ind ON ind.id_indicador= icxf.id_indicador
@@ -130,6 +131,24 @@ function getFocalizacionesXZonaQuery($con, $mun)
     WHERE mun.id_municipio = $mun
     GROUP BY foc.id_focalizacion, mun.id_municipio, mun.municipio, compor.id_comportamientos, compor.comportamientos, foc.tipo_focalizacion, foc.fecha, compe.competencia
     ORDER BY foc.fecha DESC";
+
+    return executeQuery($con, $sql);
+}
+
+function getInformesQuery($con)
+{
+    $sql = "SELECT zona, SUM(cantidad_participantes)
+    FROM cobertura
+    GROUP BY zona";
+
+    return executeQuery($con, $sql);
+}
+
+function getMunicipioInformeQuery($con)
+{
+    $sql = "SELECT DISTINCT municipio
+    FROM cobertura
+    ORDER BY municipio ASC";
 
     return executeQuery($con, $sql);
 }
@@ -226,11 +245,15 @@ function getTemasQuery($con, $compor)
 
 function loginQuery($con, $uid, $psswd)
 {
-    $sql = "SELECT per.cedula, per.id_rol, rol.cargo, per.email, per.usuario, per.passwd, per.foto_url, asz.id_zona, per.nombres
-    FROM personas per
-	LEFT JOIN asignar_zonas asz ON asz.cedula_asignado = per.cedula
-    JOIN roles rol ON rol.id_cargo = per.id_rol
-    WHERE email = '" . $uid . "' OR usuario = '" . $uid . "' ";
+    if (empty($uid)) {
+        $sql = "";
+    } else {
+        $sql = "SELECT per.cedula, per.id_rol, rol.cargo, per.email, per.usuario, per.passwd, per.foto_url, asz.id_zona, per.nombres
+        FROM personas per
+        LEFT JOIN asignar_zonas asz ON asz.cedula_asignado = per.cedula
+        JOIN roles rol ON rol.id_cargo = per.id_rol
+        WHERE email = '" . $uid . "' OR usuario = '" . $uid . "' ";
+    }
 
     return logIn($con, $sql, $psswd);
 }
@@ -291,7 +314,7 @@ function getMaxIdTAdminQuery($con)
     return executeQuery($con, $sql);
 }
 
-function getPlaneacionesCalendarQuery($con, $plan_ejec)
+function getPlaneacionesCalendarQuery($con)
 {
     $sql = "SELECT DISTINCT plan.id_planeacion, fecha_plan, jornada, lugar_encuentro, mun.municipio,
 	foc.id_focalizacion, bar.barrio, ver.vereda, compor.comportamientos, compe.competencia, zon.zonas, zon.id_zona, nombre_estrategia, nombre_tactico, temas,
@@ -315,25 +338,9 @@ function getPlaneacionesCalendarQuery($con, $plan_ejec)
     JOIN tacticos_x_planeacion txp ON txp.id_planeacion = plan.id_planeacion
     JOIN tactico tact ON txp.id_tactico = tact.id_tactico
     JOIN estrategias estrat ON estrat.id_estrategia = tact.id_estrategia
-    JOIN tipo_gestion tg ON tg.id_tipo_gestion = foc.id_tipo_gestion ";
-
-    if (!empty($plan_ejec)) {
-
-        $and_true = true;
-
-        foreach ($plan_ejec as $key => $value) {
-            $val = $value['id'];
-            if ($and_true) {
-                $sql .= "WHERE plan.id_planeacion <> $val";
-                $and_true = false;
-            } else {
-                $sql .= " AND plan.id_planeacion <> $val";
-            }
-        }
-
-        $sql .= " ORDER BY plan.id_planeacion ASC";
-
-    }
+    JOIN tipo_gestion tg ON tg.id_tipo_gestion = foc.id_tipo_gestion 
+    WHERE plan.estado = 'Planeado'
+    ORDER BY plan.id_planeacion ASC";
 
     return executeQuery($con, $sql);
 }
@@ -360,7 +367,7 @@ function getPlaneacionesEjecutadosOEnEjecucionQuery($con)
 {
     $sql = "SELECT DISTINCT plan.id_planeacion, fecha_plan, jornada, lugar_encuentro, mun.municipio,
 	foc.id_focalizacion, bar.barrio, ver.vereda, compor.comportamientos, compe.competencia, zon.zonas, zon.id_zona, nombre_estrategia, nombre_tactico, temas,
-	CONCAT(per.nombres, ' ', per.apellidos) as nombre
+	CONCAT(per.nombres, ' ', per.apellidos) as nombre, plan.estado, hora, etapa_planeacion, plan.solicitud_interventora
     FROM planeacion plan
     LEFT JOIN barrios bar ON bar.id_barrio = plan.id_barrio
     LEFT JOIN comunas com ON bar.id_comuna = com.id_comuna
@@ -381,7 +388,8 @@ function getPlaneacionesEjecutadosOEnEjecucionQuery($con)
     JOIN tactico tact ON txp.id_tactico = tact.id_tactico
     JOIN estrategias estrat ON estrat.id_estrategia = tact.id_estrategia
     JOIN tipo_gestion tg ON tg.id_tipo_gestion = foc.id_tipo_gestion
-    WHERE plan.id_planeacion IN (SELECT id_planeacion FROM ejecucion)";
+    JOIN registro_ubicacion ru ON ru.id_planeacion = plan.id_planeacion
+    WHERE plan.estado = 'En Ejecución' OR plan.estado = 'Ejecutado'";
 
     return executeQuery($con, $sql);
 }
@@ -434,11 +442,78 @@ function getTrabajosAdministrativosCalendarQuery($con)
     return executeQuery($con, $sql);
 }
 
-function getUserRolQuery($con, $name)
+function getPlaneacionesGeoAppQuery($con, $zona)
 {
-    $sql = "SELECT id_rol
-    FROM personas
-    WHERE email = '$name' OR usuario = '$name'";
+
+    date_default_timezone_set('America/Bogota');
+
+    $current_date = date('Y-m-d');
+
+    $sql = "SELECT DISTINCT pl.id_planeacion, fecha_plan, municipio, CONCAT(nombres, ' ', apellidos) as nombre, zonas, nombre_entidad, comportamientos, competencia, nombre_estrategia, temas, nombre_tactico, pl.estado
+	FROM planeacion pl
+    JOIN focalizacion foc ON pl.id_focalizacion = foc.id_focalizacion
+    JOIN subtemas_x_planeacion sxp ON sxp.id_planeacion = pl.id_planeacion
+	JOIN subtemas sutem ON sutem.id_subtema = sxp.id_subtema
+    JOIN temas tem ON tem.id_temas = sutem.id_temas
+    JOIN tacticos_x_planeacion txp ON txp.id_planeacion = pl.id_planeacion
+    JOIN tactico tact ON txp.id_tactico = tact.id_tactico
+    JOIN estrategias estrat ON estrat.id_estrategia = tact.id_estrategia
+    JOIN tipo_gestion tg ON tg.id_tipo_gestion = foc.id_tipo_gestion
+	JOIN municipios mun ON mun.id_municipio = foc.id_municipio
+	JOIN zonas zon ON mun.id_zona = zon.id_zona
+	JOIN asignar_zonas az ON az.id_zona = zon.id_zona
+	JOIN personas per ON per.cedula = az.cedula_asignado
+	JOIN entidades ent ON pl.id_entidad = ent.id_entidad
+	JOIN indicadores_chec_x_focalizacion ixf ON ixf.id_focalizacion = foc.id_focalizacion
+	JOIN indicadores_chec ic ON ic.id_indicador = ixf.id_indicador
+	JOIN comportamientos compor ON ic.id_comportamiento = compor.id_comportamientos
+	JOIN competencias compe ON compor.id_competencia = compe.id_competencia
+    WHERE fecha_plan = '$current_date' ";
+
+    if (!empty($zona)) {
+        $sql .= "AND zon.id_zona = $zona";
+    }
+
+    return executeQuery($con, $sql);
+}
+
+function getUserRolQuery($con)
+{
+    $sql = "SELECT email, usuario, id_rol
+    FROM personas";
+
+    return executeQuery($con, $sql);
+}
+
+function checkFocalizacionQuery($con, $id_mun, $comp, $tipo)
+{
+    $sql = "SELECT DISTINCT mun.municipio, compe.competencia, foc.tipo_focalizacion
+    FROM focalizacion foc
+    LEFT JOIN indicadores_chec_x_focalizacion icxf ON icxf.id_focalizacion= foc.id_focalizacion
+    LEFT JOIN indicadores_chec ind ON ind.id_indicador= icxf.id_indicador
+    LEFT JOIN comportamientos compor ON compor.id_comportamientos = ind.id_comportamiento
+    LEFT JOIN competencias compe ON compe.id_competencia = compor.id_competencia
+    JOIN municipios mun ON mun.id_municipio = foc.id_municipio
+    WHERE mun.id_municipio = $id_mun AND compor.id_comportamientos = $comp AND foc.tipo_focalizacion = '$tipo'";
+
+    return executeQuery($con, $sql);
+}
+
+function ejecucion_planeacionQuery($con, $id_plan)
+{
+    $sql = "SELECT id_ejecucion
+    FROM ejecucion
+    WHERE id_planeacion = $id_plan";
+
+    return executeQuery($con, $sql);
+}
+
+function checkRegistrosQuery($con, $id_plan)
+{
+    $sql = "SELECT DISTINCT rp.id_planeacion, tr.id_tipo_registro
+    FROM registros_x_planeacion rp
+    JOIN tipo_registro tr ON tr.id_tipo_registro = rp.id_tipo_registro
+    WHERE id_planeacion = 20 AND rp.id_tipo_registro IN (1, 3, 4, 5)";
 
     return executeQuery($con, $sql);
 }
@@ -462,11 +537,11 @@ function insertFocalizacionQuery($con, $id_mun, $id_tipoGestion, $tipo_focalizac
 
 }
 
-function insertPlaneacionQuery($con, $jornada, $lugar_encuentro, $id_barrio, $id_vereda, $id_entidad, $fecha_plan, $fecha_registro, $id_foc)
+function insertPlaneacionQuery($con, $jornada, $lugar_encuentro, $id_barrio, $id_vereda, $id_entidad, $fecha_plan, $fecha_registro, $id_foc, $estado)
 {
     $sql = "INSERT INTO public.planeacion(
-	jornada, lugar_encuentro, id_barrio, id_vereda, id_entidad, fecha_plan, fecha_registro, id_focalizacion)
-    VALUES ('$jornada', '$lugar_encuentro', $id_barrio, $id_vereda, $id_entidad, '$fecha_plan', '$fecha_registro', $id_foc);";
+	jornada, lugar_encuentro, id_barrio, id_vereda, id_entidad, fecha_plan, fecha_registro, id_focalizacion, estado)
+    VALUES ('$jornada', '$lugar_encuentro', $id_barrio, $id_vereda, $id_entidad, '$fecha_plan', '$fecha_registro', $id_foc, '$estado');";
 
     return insertQuery($con, $sql);
 }
@@ -571,5 +646,41 @@ function aplazarPlaneacionQuery($con, $id_plan, $fecha_plan)
 	SET fecha_plan='$fecha_plan'
     WHERE id_planeacion = $id_plan;";
 
-    insertQuery($con, $sql);
+    return insertQuery($con, $sql);
+}
+
+function insertRegistrosQuery($con, $tipo_registro, $id_plan, $url)
+{
+    $sql = "INSERT INTO public.registros_x_planeacion(
+    id_tipo_registro, tipo_registro, id_planeacion, url)
+    VALUES (nextval('seq_tipo_registro'), $tipo_registro, $id_plan, '$url');";
+
+    return insertQuery($con, $sql);
+}
+
+function updateEstadoPlaneacionQuery($con, $estado, $id_plan)
+{
+    $sql = "UPDATE planeacion
+    SET estado = '$estado'
+    WHERE id_planeacion = $id_plan";
+
+    return insertQuery($con, $sql);
+}
+
+function getEtapaPlaneacionQuery($con, $id_plan)
+{
+    $sql = "SELECT etapa_planeacion
+    FROM registro_ubicacion
+    WHERE id_planeacion = $id_plan";
+
+    return executeQuery($con, $sql);
+}
+
+function insertGeoLocationQuery($con, $lat, $long, $fecha, $hora, $id_plan, $etapa_plan)
+{
+    $sql = "INSERT INTO public.registro_ubicacion(
+    id_registro, latitud, longitud, fecha, hora, id_planeacion, etapa_planeacion)
+    VALUES (nextval('seq_registro_ubicacion'), $lat, $long, '$fecha', '$hora', $id_plan, '$etapa_plan');";
+
+    return executeQuery($con, $sql);
 }

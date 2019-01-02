@@ -35,6 +35,8 @@ if (isset($_POST)) {
 
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     if (isset($_POST['planEjec_cal'])) {
         $json = $api->getPlaneacionesEjecutadosOEnEjecucion();
 
@@ -57,23 +59,80 @@ if (isset($_POST)) {
                     "nombre_estrategia" => $value['nombre_estrategia'],
                     "tacticos" => [],
                     "temas" => $value['temas'],
-                    "gestor" => $value['nombre']
+                    "gestor" => $value['nombre'],
+                    "hora" => [],
+                    "estado" => $value['estado'],
                 ];
             }
 
             if (empty($newArray[$value['id_planeacion']]['tacticos'])) {
                 array_push($newArray[$value['id_planeacion']]['tacticos'], $value['nombre_tactico']);
             } else {
+                $valid = true;
                 foreach ($newArray[$value['id_planeacion']]['tacticos'] as $k => $val) {
-                    if ($val != $value['nombre_tactico']) {
-                        array_push($newArray[$value['id_planeacion']]['tacticos'], $value['nombre_tactico']);
+                    if ($val == $value['nombre_tactico']) {
+                        $valid = false;
+                        break;
                     }
+                }
+
+                if ($valid) {
+                    array_push($newArray[$value['id_planeacion']]['tacticos'], $value['nombre_tactico']);
                 }
             }
 
+            /* Set time */
+            if ($value['etapa_planeacion'] == "Iniciada") {
+                $newArray[$value['id_planeacion']]['hora']['hora_inicio'] = $value['hora'];
+            } else {
+                $newArray[$value['id_planeacion']]['hora']['hora_fin'] = $value['hora'];
+            }
         }
 
+        /* Set variables for when planeacion is fully executed */
+        $requisitos = array();
+        $list = "";
         foreach ($newArray as $key => $value) {
+
+            if ($value['estado'] != 'Ejecutado') {
+                if (empty($value['hora']['hora_fin'])) {
+                    $value['hora']['hora_fin'] = '--:--';
+                    $validEjec = false;
+                    $validReg = false;
+                } else {
+                    $ejecuciones = $api->ejecucion_planeacion($value['id_planeacion']);
+                    $registros = $api->checkRegistros($value['id_planeacion']);
+
+                    if (empty($ejecuciones)) {
+                        array_push($requisitos, 'Registrar la ejecución de la actividad');
+                        $validEjec = false;
+                    } else {
+                        $validEjec = true;
+                    }
+
+                    if (empty($registros)) {
+                        $validReg = false;
+                        array_push($requisitos, 'Adjuntar evidencias');
+                        array_push($requisitos, 'Adjuntar asistencia');
+                        array_push($requisitos, 'Adjuntar acta');
+                    } else {
+
+                    }
+
+                    for ($i = 0; $i < count($requisitos); $i++) {
+                        $list .= '<li>' . $requisitos[$i] . '</li>';
+                    }
+
+                }
+            }
+
+            if ($value['estado'] != 'Ejecutado') {
+                $color = '#edbe00';
+                $icon = 'fas fa-minus-circle';
+            } else {
+                $color = '#269226';
+                $icon = 'fas fa-check-circle';
+            }
 
             $tacticos = implode(", ", $value['tacticos']);
 
@@ -84,36 +143,74 @@ if (isset($_POST)) {
                 'start' => $value['fecha_plan'],
 
                 'description' =>
-                'Fecha : ' . $value['fecha_plan'] . '</br>' .
-                'Jornada : ' . $value['jornada'] . '</br>' .
-                'Lugar de encuentro : ' . $value['lugar_encuentro'] . '</br>' .
-                'Municipio : ' . $value['municipio'] . '</br>' .
-                'Estrategias : ' . $value['nombre_estrategia'] . '</br>' .
-                'Tacticos : ' . $tacticos . '</br>' .
-                'Temas : ' . $value['temas'] . '</br>' .
-                'Zona : ' . $value['zonas'] . '</br>' .
-                'Gestor : ' . $value['gestor'] . '</br>',
+                '<ul>' .
+                '<li> Fecha : ' . $value['fecha_plan'] . '</li>' .
+                '<li> Jornada : ' . $value['jornada'] . '</li>' .
+                '<li> Lugar de encuentro : ' . $value['lugar_encuentro'] . '</li>' .
+                '<li> Municipio : ' . $value['municipio'] . '</li>' .
+                '<li> Estrategias : ' . $value['nombre_estrategia'] . '</li>' .
+                '<li> Tacticos : ' . $tacticos . '</li>' .
+                '<li> Temas : ' . $value['temas'] . '</li>' .
+                '<li> Zona : ' . $value['zonas'] . '</li>' .
+                '<li> Gestor : ' . $value['gestor'] . '</li>' .
+                '</ul>',
 
                 'editable' => false,
-                'color' => '#edbe00',
+                'color' => $color,
                 'textColor' => "white",
                 'zona' => $value['zonas'],
+
+                'estado' =>
+
+                '<i class="' . $icon . '" style="font-size: 3em;color: ' . $color . ';align-self: center;"></i>' .
+                '<div>' .
+                '<div class="row">' .
+                '<h4>Hora de Inicio: </h4>' .
+                '<h3>  ' . $value['hora']['hora_inicio'] . '</h3>' .
+                '</div>' .
+                '<div class="row">' .
+                '<h4>Hora de Finalización: </h4>' .
+                '<h3> ' . $value['hora']['hora_fin'] . ' </h3>' .
+                '</div>' .
+                '</div>' .
+                '<div class="accordion" id="requisitosPlan">' .
+                '<div class="card">' .
+                '<div class="card-header" id="headingOne">' .
+                ' <h2 class="mb-0">' .
+                '<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Mira lo que falta para ejecutar por completo la planeación</button>' .
+                '</h2>' .
+                '</div>' .
+
+                '<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#requisitosPlan">' .
+                '<div class="card-body">' .
+                '<ul>' .
+                $list .
+                '</ul>' .
+                '</div>' .
+                '</div>' .
+                '</div>' .
+                '</div>',
+
             );
+
+            $requisitos = array();
+            $list = "";
         }
 
         $json = array_values($newArray);
-
     }
+
+    /* ------------------------------------------------------------------------------------------------------- */
 
     if (isset($_POST['plan_cal'])) {
 
         $arrayPlaneaciones = $_POST['plan_cal'];
 
-        $json = $api->getPlaneacionesCalendar($arrayPlaneaciones);
+        $json = $api->getPlaneacionesCalendar();
 
-        if(empty($json)){
+        if (empty($json)) {
             $json = array("message" => "No hay nada planeado", "error" => 1);
-        }else{
+        } else {
             $newArray = array();
             $n = 0;
 
@@ -134,7 +231,7 @@ if (isset($_POST)) {
                         "tacticos" => [],
                         "temas" => $value['temas'],
                         "gestor" => $value['nombre'],
-                        "solicitud_interventora" => $value['solicitud_interventora']
+                        "solicitud_interventora" => $value['solicitud_interventora'],
                     ];
                 }
 
@@ -154,9 +251,9 @@ if (isset($_POST)) {
 
                 $tacticos = implode(", ", $value['tacticos']);
 
-                if($value['solicitud_interventora']){
+                if ($value['solicitud_interventora']) {
                     $color = "#7704df";
-                }else{
+                } else {
                     $color = "red";
                 }
 
@@ -167,15 +264,17 @@ if (isset($_POST)) {
                     'start' => $value['fecha_plan'],
 
                     'description' =>
-                    'Fecha : ' . $value['fecha_plan'] . '</br>' .
-                    'Jornada : ' . $value['jornada'] . '</br>' .
-                    'Lugar de encuentro : ' . $value['lugar_encuentro'] . '</br>' .
-                    'Municipio : ' . $value['municipio'] . '</br>' .
-                    'Estrategias : ' . $value['nombre_estrategia'] . '</br>' .
-                    'Tacticos : ' . $tacticos . '</br>' .
-                    'Temas : ' . $value['temas'] . '</br>' .
-                    'Zona : ' . $value['zonas'] . '</br>' .
-                    'Gestor : ' . $value['gestor'] . '</br>',
+                    '<ul>' .
+                    '<li> Fecha : ' . $value['fecha_plan'] . '</li>' .
+                    '<li> Jornada : ' . $value['jornada'] . '</li>' .
+                    '<li> Lugar de encuentro : ' . $value['lugar_encuentro'] . '</li>' .
+                    '<li> Municipio : ' . $value['municipio'] . '</li>' .
+                    '<li> Estrategias : ' . $value['nombre_estrategia'] . '</li>' .
+                    '<li> Tacticos : ' . $tacticos . '</li>' .
+                    '<li> Temas : ' . $value['temas'] . '</li>' .
+                    '<li> Zona : ' . $value['zonas'] . '</li>' .
+                    '<li> Gestor : ' . $value['gestor'] . '</li>' .
+                    '</ul>',
 
                     'editable' => false,
 

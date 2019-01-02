@@ -1,0 +1,8 @@
+SELECT eje.fecha, ppz.personas_numeroidentificacion, per.nombres
+FROM ejecucion eje
+JOIN ejecuciones_por_planeacion epp ON eje.id_ejecucion = epp.ejecucion_id_ejecucion
+JOIN planeaciones_por_intervencion ppi ON epp.id_planeaciones_por_intervencion = ppi.id_planeaciones_por_intervencion
+JOIN intervenciones inter ON inter.id_intervenciones = ppi.intervenciones_id_intervenciones
+JOIN personas_por_zona ppz ON ppz.id_personas_por_zonacol = inter.personas_por_zona_id_personas_por_zonacol
+JOIN personas per ON per.numeroidentificacion = ppz.personas_numeroidentificacion
+ORDER BY personas_numeroidentificacion ASC

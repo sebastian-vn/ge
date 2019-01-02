@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   var containerEl = $("#calendar");
   getPlaneacionesCalendar();
   containerEl.fullCalendar({
@@ -6,7 +6,7 @@ $(function() {
     customButtons: {
       detalles: {
         text: "Indicador Calendario",
-        click: function() {
+        click: function () {
           $("#modalCalendarDetails").modal("toggle");
         }
       }
@@ -25,19 +25,21 @@ $(function() {
     eventRender: function eventRender(event, element, view) {
       return ["0", event.zona].indexOf($("#calendarSelect").val()) >= 0;
     },
-    eventClick: function(event, jsEvent, view) {
+    eventClick: function (event, jsEvent, view) {
       document.getElementById(
         "modalEventHeader"
       ).style.cssText = `background-color: ${event.color} !important`;
+      setModal(event.color)
       $("#modalEventTitle").html(event.title);
       $("#modalEventTitle").css('color', 'white');
-      $("#modalEventDescription").html(event.description);
+      $("#modalEventDescription #left").html(event.description);
+      $("#modalEventDescription #right").html(event.estado);
       $("#modalEventsCalendar").modal();
     }
   });
 
   //
-  $(window).resize(function () { 
+  $(window).resize(function () {
     $('#calendar').fullCalendar('option', 'height', getCalendarHeight());
   });
 
@@ -53,9 +55,9 @@ function getParam(param) {
   param = param.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
   var results = regex.exec(location.search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null ?
+    "" :
+    decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 function getPlaneacionesCalendar() {
@@ -67,7 +69,7 @@ function getPlaneacionesCalendar() {
       planEjec_cal: ""
     },
     dataType: "json",
-    success: function(dataEjecutado) {
+    success: function (dataEjecutado) {
       $("#calendar").fullCalendar("addEventSource", dataEjecutado);
 
       $.ajax({
@@ -77,11 +79,11 @@ function getPlaneacionesCalendar() {
           no_ejec: ""
         },
         dataType: "json",
-        success: function(dataNoEjecutado) {
+        success: function (dataNoEjecutado) {
           $("#calendar").fullCalendar("addEventSource", dataNoEjecutado);
           var fullArrayPlans = dataEjecutado;
 
-          if(fullArrayPlans == "") {
+          if (fullArrayPlans == "") {
             fullArrayPlans = "";
           }
 
@@ -92,8 +94,8 @@ function getPlaneacionesCalendar() {
               plan_cal: fullArrayPlans
             },
             dataType: "json",
-            success: function(dataPlans) {
-              if(!dataPlans.error){
+            success: function (dataPlans) {
+              if (!dataPlans.error) {
                 $("#calendar").fullCalendar("addEventSource", dataPlans);
               }
               getTrabajoAdministrativo();
@@ -111,11 +113,11 @@ function getTrabajoAdministrativo() {
     url: "server/getTAdministrativos.php",
     data: "",
     dataType: "json",
-    success: function(response) {
+    success: function (response) {
       $("#calendar").fullCalendar("addEventSource", response);
       $("#calendar").fullCalendar("rerenderEvents");
     },
-    complete: function() {
+    complete: function () {
       $("#calendar").fadeIn();
       $("#calendar").removeClass("showNone");
       $("#loaderCalendar").fadeOut();
@@ -132,7 +134,7 @@ function getTrabajoAdministrativo() {
         </select>`
       );
 
-      $("#calendarSelect").on("change", function() {
+      $("#calendarSelect").on("change", function () {
         $("#calendar").fullCalendar("rerenderEvents");
       });
 
@@ -142,21 +144,35 @@ function getTrabajoAdministrativo() {
   });
 }
 
-function getCalendarHeight(){
+function getCalendarHeight() {
   return $(window).height() - 151;
 }
 
-function getCalendarEventsZona(){
-  if(id_zona != "all"){
+function getCalendarEventsZona() {
+  if (id_zona != "all") {
     var zonas = {
-      1 : "Centro",
-      2 : "Suroccidente",
-      3 : "Occidente",
-      4 : "Noroccidente",
-      5 : "Oriente"
+      1: "Centro",
+      2: "Suroccidente",
+      3: "Occidente",
+      4: "Noroccidente",
+      5: "Oriente"
     }
 
     $('#calendarSelect').val(zonas[id_zona]);
     $("#calendar").fullCalendar("rerenderEvents");
+  }
+}
+
+function setModal(color){
+  if (color != '#edbe00' && color != '#269226') {
+    if (!$("#modalEventDescription #left").hasClass('planeado')) {
+      $("#modalEventDescription #left").addClass('planeado');
+      $("#modalEventDescription #right").addClass('showNone');
+    }
+  } else {
+    if ($("#modalEventDescription #left").hasClass('planeado')) {
+      $("#modalEventDescription #left").removeClass('planeado');
+      $("#modalEventDescription #right").removeClass('showNone');
+    }
   }
 }

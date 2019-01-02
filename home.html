@@ -35,12 +35,13 @@
 
       <li class="nav-item">
         <div class="imgProfile">
-          <img class="" src="img/ic4qgE7.png" alt="">
+          <img class="" src="img/user.jpg" alt="">
           <div class="profileDropdown">
           </div>
         </div>
         <a class="nav-link" href="iniciarSesion.html"><i class="fas fa-home"></i></a>
         <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>
+        <a class="nav-link" href="informes.html"><i class="fas fa-chart-line"></i></a>
       </li>
     </ul>
 
@@ -53,13 +54,13 @@
               <ol class="breadcrumb">
               </ol>
             </nav>
-            <a id="returnMunicipio" class="returnBtn showNone" class="btn btn-success" onClick="returnMunicipio(this)">
+            <a id="returnMunicipio" class="returnBtn showNone" class="btn btn-success" onClick="returnMunicipio()">
               <i class="fas fa-arrow-circle-left arrow"></i>
             </a>
-            <a id="returnFocalizacion" class="returnBtn showNone" class="btn btn-success" onClick="returnFocalizacion(this)">
-                <i class="fas fa-arrow-circle-left arrow"></i>
+            <a id="returnFocalizacion" class="returnBtn showNone" class="btn btn-success" onClick="returnFocalizacion()">
+              <i class="fas fa-arrow-circle-left arrow"></i>
             </a>
-            <a id="returnZona" class="returnBtn showNone" class="btn btn-success" onClick="returnZona(this)">
+            <a id="returnZona" class="returnBtn showNone" class="btn btn-success" onClick="returnZona()">
               <i class="fas fa-arrow-circle-left arrow"></i>
             </a>
           </div>
@@ -70,13 +71,13 @@
             </div>
           </div>
 
-          <div class="zonas showNone homeCard"></div>
+          <div class="zonas showNone homeCard" id="zonas"></div>
 
-          <div class="municipios showNone homeCard"></div>
+          <div class="municipios showNone homeCard" id="municipios"></div>
 
-          <div class="focalizaciones showNone homeCard"></div>
+          <div class="focalizaciones showNone homeCard" id="focalizaciones"></div>
 
-          <div class="planeaciones showNone animated homeCard">
+          <div class="planeaciones showNone animated homeCard" id="planeaciones">
           </div>
         </div>
 
@@ -89,10 +90,16 @@
           </div>
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Calendario</a>
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                aria-selected="true">Calendario</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mapa</a>
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                aria-selected="false">Mapa</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="ejecucion-tab" data-toggle="tab" href="#plan_hoy" role="tab" aria-controls="plan_hoy"
+                aria-selected="false">Planeaciones hoy</a>
             </li>
           </ul>
           <div class="tab-content" id="myTabContent">
@@ -100,7 +107,10 @@
               <div id="calendar"></div>
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div id="map"></div>
+              <div id="map"></div>
+            </div>
+            <div class="tab-pane fade" id="plan_hoy" role="tabpanel" aria-labelledby="ejecucion-tab">
+              <p>This is tab 3</p>
             </div>
           </div>
         </div>
@@ -110,31 +120,32 @@
 
 
     <!-- MODAL TRABAJO ADMINISTRATIVO -->
-  <div class="modal fade bd-example-modal-lg" id="modalTAdmin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+    <div class="modal fade bd-example-modal-lg" id="modalTAdmin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
-        <div id="modalLoader" class="showNone">
-          <div class="center" id="loaderList">
-            <div class="pulse">
-              <img src="img/logo-min.png" alt="">
+          <div id="modalLoader" class="showNone">
+            <div class="center" id="loaderList">
+              <div class="pulse">
+                <img src="img/logo-min.png" alt="">
+              </div>
             </div>
           </div>
-        </div>
 
-        <div id="detalleCard">
-          <div id="headerModalTAdmin">
-            <i class="fas fa-laptop"></i>
-            <h2>Registrar Trabajo Administrativo</h2>
-          </div>
-          <div id="tAdmin" class="trabajoAdmin">
-            <form id="formTAdmin">
+          <div id="detalleCard">
+            <div id="headerModalTAdmin">
+              <i class="fas fa-laptop"></i>
+              <h2>Registrar Trabajo Administrativo</h2>
+            </div>
+            <div id="tAdmin" class="trabajoAdmin">
+              <form id="formTAdmin">
                 <div class="row">
                   <div class="col-lg-4 col-md-12 col-sm-12">
                     <label for="datepicker">Seleccione Fecha
                       <label class="obligatorio" for="datepicker">*</label>
                     </label>
-                    <input class="required" id="datepicker" placeholder="Fecha" name="fecha" readonly required/>
+                    <input class="required" id="datepicker" placeholder="Fecha" name="fecha" readonly required />
                   </div>
                   <div class="col-lg-4 col-md-12 col-sm-12">
                     <label for="duracion">Hora inicio
@@ -162,8 +173,8 @@
                         <label class="custom-control-label" for="tiempoEstudio">Tiempo de estudio</label>
                       </div>
                       <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="seguimiento" name="tAdmin" value="3">
-                          <label class="custom-control-label" for="seguimiento">Seguimiento a grupos  </label>
+                        <input type="checkbox" class="custom-control-input" id="seguimiento" name="tAdmin" value="3">
+                        <label class="custom-control-label" for="seguimiento">Seguimiento a grupos </label>
                       </div>
                     </div>
                   </div>
@@ -178,54 +189,57 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 colBtnContacto">
                     <button id="btnRegTAdmin" type="button" class="btn btn-success" onclick="insertTAdmin()">Registrar</button>
                   </div>
-              </div>
-            </form>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- MODAL CALENDAR EVENT DETAILS -->
-  <div class="modal fade" id="modalEventsCalendar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header" id="modalEventHeader">
-          <h5 class="modal-title" id="modalEventTitle">
+    <!-- MODAL CALENDAR EVENT DETAILS -->
+    <div class="modal fade" id="modalEventsCalendar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header" id="modalEventHeader">
+            <h5 class="modal-title" id="modalEventTitle">
 
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" id="modalEventDescription">
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL CALENDAR DETAILS -->
-  <div class="modal fade bd-example-modal-lg" id="modalCalendarDetails" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div style="height: auto; padding: 20px">
-          <div class="indicadoresCalendar" id="planeado">Evento Planeado</div>
-          <div class="indicadoresCalendar" id="enejecucion">Evento en Ejecución</div>
-          <div class="indicadoresCalendar" id="ejecutado">Evento Ejecutado</div>
-          <div class="indicadoresCalendar" id="tadmin">Tarea Administrativa</div>
-          <div class="indicadoresCalendar" id="noejecutado">Evento no Ejecutado</div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modalEventDescription">
+            <div id="left"></div>
+            <div id="right"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- MODAL CALENDAR DETAILS -->
+    <div class="modal fade bd-example-modal-lg" id="modalCalendarDetails" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div style="height: auto; padding: 20px">
+            <div class="indicadoresCalendar" id="planeado">Evento Planeado</div>
+            <div class="indicadoresCalendar" id="enejecucion">Evento en Ejecución</div>
+            <div class="indicadoresCalendar" id="ejecutado">Evento Ejecutado</div>
+            <div class="indicadoresCalendar" id="tadmin">Tarea Administrativa</div>
+            <div class="indicadoresCalendar" id="noejecutado">Evento no Ejecutado</div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </main>
 
