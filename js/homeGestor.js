@@ -322,11 +322,13 @@ function checkLogged() {
         <a class="nav-link" href="banco/"><i class="fas fa-book"></i></a>`
       );
 
-      $("#pCompleta").change(function () {
+      $("#pCompleta").change(function() {
         if ($(this).prop("checked")) {
           $("#leftPortion").fadeOut();
           $("#leftPortion").addClass("showNone");
-          $("#rightPortion").switchClass("col-md-6", "col-md-12",
+          $("#rightPortion").switchClass(
+            "col-md-6",
+            "col-md-12",
             200,
             "linear"
           );
@@ -420,7 +422,7 @@ function returnMunicipio() {
   $(".municipios").fadeIn();
   $(".municipios").removeClass("showNone");
   determineRtnBtn();
-  if ($(".breadcrumb #municipio").length > 0) $(".breadcrumb #municipio").remove();
+  if($(".breadcrumb #municipio").length > 0) $(".breadcrumb #municipio").remove();
 }
 
 function returnFocalizacion() {
@@ -428,7 +430,7 @@ function returnFocalizacion() {
   $(".planeaciones").addClass("showNone");
   $(".focalizaciones").fadeIn();
   determineRtnBtn();
-  if ($(".breadcrumb #focalizacion").length > 0) $(".breadcrumb #focalizacion").remove();
+  if($(".breadcrumb #focalizacion").length > 0) $(".breadcrumb #focalizacion").remove();
 }
 
 function returnZona() {
@@ -438,7 +440,7 @@ function returnZona() {
   $(".zonas").fadeIn();
   $(".zonas").removeClass("showNone");
   determineRtnBtn();
-  if ($(".breadcrumb #zona").length > 0) $(".breadcrumb #zona").remove();
+  if($(".breadcrumb #zona").length > 0) $(".breadcrumb #zona").remove();
 }
 
 function determineBreadcrumb(column, name) {
@@ -513,49 +515,4 @@ function showReturnBtn(btn) {
       rtnbtns[i].classList.add("showNone");
     }
   }
-}
-
-function getPlaneacionesHoy(){
-  $.ajax({
-    type: "POST",
-    url: "server/getPlaneaciones.php",
-    data: {
-      geoAppPlan: ''
-    },
-    dataType: "json",
-    success: function (response) {
-      if(response == ""){
-        $('#plan_hoy').html(
-          `<div class="alert alert-warning" role="alert">
-            No hay nada planeado para el día de hoy
-          </div>`
-        )
-      }else{
-        $('#plan_hoy').html('');
-        response.forEach(element => {
-          if(element.estado == 'Planeado'){
-            element.estado = 'Sin iniciar';
-            color = 'grey';
-          }else{
-            color = '#edbe00';
-          }
-          $('#plan_hoy').append(
-            `<div class="card text-center">
-              <div class="card-header">
-                ${element.municipio} - ${element.nombre}
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">${element.comportamientos} - ${element.competencia}</h5>
-                <p class="card-text">${element.nombre_estrategia} (${element.nombre_tactico}) - ${element.temas}</p>
-                <i class="fas fa-minus-circle" style="font-size:2em; color:${color}"></i>
-              </div>
-              <div class="card-footer text-muted">
-                ${element.estado}
-              </div>
-            </div>`
-          );
-        });
-      }
-    }
-  });
 }

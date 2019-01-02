@@ -7,9 +7,7 @@ function getInformes() {
   $.ajax({
     type: "POST",
     url: "server/getInformes.php",
-    data: {
-      informe : ""
-    },
+    data: "",
     dataType: "json",
     success: function(response) {
       var myChart = Highcharts.chart("chart1", {
@@ -104,13 +102,9 @@ function getTacticosCobertura(){
   });
 }
 
-function getValues(){
-
-}
-
 function openNav() {
-  document.getElementById("mySidenav").style.width = "450px";
-  document.getElementsByClassName("main")[0].style.marginLeft = "450px";
+  document.getElementById("mySidenav").style.width = "400px";
+  document.getElementsByClassName("main")[0].style.marginLeft = "400px";
 }
 
 function closeNav() {

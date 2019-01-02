@@ -232,12 +232,7 @@ class gestionEducativa
         return getMunicipioInformeQuery($this->con);
     }
 
-    public function getUserRol()
-    {
-        return getUserRolQuery($this->con);
-    }
-
-    public function getPlaneacionesGeoApp($zona)
+    public function getUserRol($name)
     {
         return getPlaneacionesGeoAppQuery($this->con, $zona);
     }
@@ -250,35 +245,5 @@ class gestionEducativa
     public function getInformes()
     {
         return getInformesQuery($this->con);
-    }
-
-    public function getEtapaPlaneacion($id_plan)
-    {
-        return getEtapaPlaneacionQuery($this->con, $id_plan);
-    }
-
-    public function updateEstadoPlaneacion($estado, $id_plan)
-    {
-        return updateEstadoPlaneacionQuery($this->con, $estado, $id_plan);
-    }
-
-    public function insertGeoLocation($lat, $long, $fecha, $hora, $id_plan, $etapa_plan)
-    {
-        return insertGeoLocationQuery($this->con, $lat, $long, $fecha, $hora, $id_plan, $etapa_plan);
-    }
-
-    public function checkFocalizacion($id_mun, $comp, $tipo)
-    {
-        return checkFocalizacionQuery($this->con, $id_mun, $comp, $tipo);
-    }
-
-    public function ejecucion_planeacion($id_plan)
-    {
-        return ejecucion_planeacionQuery($this->con, $id_plan);
-    }
-
-    public function checkRegistros($id_plan)
-    {
-        return checkRegistrosQuery($this->con, $id_plan);
     }
 }
