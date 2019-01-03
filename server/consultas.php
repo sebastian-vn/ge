@@ -16,21 +16,19 @@ function executeQuery($con, $sql)
 
 function logIn($con, $sql, $pass)
 {
-    if(empty($sql)){
+    if (empty($sql)) {
         session_start();
 
         $_SESSION['guest'] = array("nombre" => "invitado", "rol" => 4, "zona" => "all");
-        header("Location: ../opciones.html?user=4&id_zona=all");
+        $data = array("error" => 1, "user" => $_SESSION['user']);
         exit();
-    }else{
+    } else {
         if ($result = $con->query($sql)) {
             if ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
                 $pswdCheck = password_verify($pass, $row['passwd']);
                 if ($pswdCheck == false) {
-                    header("Location: ../iniciarSesion.html?error=wrgpswd");
-                    exit();
-                    echo false;
+                    $data = array("error" => 0, "error_type" => "wrgpswd");
 
                 } elseif ($pswdCheck == true) {
                     session_start();
@@ -39,27 +37,17 @@ function logIn($con, $sql, $pass)
                         'pass' => $row['passwd'], 'nombre' => $row['nombres'], 'rol' => $row['id_rol'],
                         'zona' => $row['id_zona']);
 
-                    if ($row['id_rol'] != 3) {
+                    $data = array("error" => 1, "user" => $_SESSION['user']);
 
-                        header("Location: ../opciones.html?user=" . $row['id_rol'] . "&id_zona=all");
-                        exit();
-                    } else {
-
-                        header("Location: ../opciones.html?user=" . $row['id_rol'] . "&id_zona=" . $row['id_zona'] . "");
-                        exit();
-                    }
                 }
             } else {
-                header("Location: ../iniciarSesion.html?error=nouser");
-                exit();
+                $data = array("error" => 0, "error_type" => "nouser");
             }
         }
     }
 
     return $data;
 }
-
-
 
 function insertQuery($con, $sql)
 {
@@ -147,7 +135,8 @@ function getFocalizacionesXZonaQuery($con, $mun)
     return executeQuery($con, $sql);
 }
 
-function getInformesQuery($con){
+function getInformesQuery($con)
+{
     $sql = "SELECT zona, SUM(cantidad_participantes)
     FROM cobertura
     GROUP BY zona";
@@ -256,9 +245,9 @@ function getTemasQuery($con, $compor)
 
 function loginQuery($con, $uid, $psswd)
 {
-    if(empty($uid)){
+    if (empty($uid)) {
         $sql = "";
-    }else{
+    } else {
         $sql = "SELECT per.cedula, per.id_rol, rol.cargo, per.email, per.usuario, per.passwd, per.foto_url, asz.id_zona, per.nombres
         FROM personas per
         LEFT JOIN asignar_zonas asz ON asz.cedula_asignado = per.cedula
@@ -529,6 +518,16 @@ function checkRegistrosQuery($con, $id_plan)
     return executeQuery($con, $sql);
 }
 
+function getGuiasPlaneacionQuery($con, $subtema)
+{
+    $sql = "SELECT id_guia, CONCAT('banco', '/', rec.recurso_url,'/', nombre,'.pdf') AS fichero_url, nombre 
+    FROM guias as gui
+    JOIN recursos rec ON rec.id_recurso = gui.id_recurso
+    WHERE gui.id_subtema IN ($subtema) ";
+
+    return executeQuery($con, $sql);
+}
+
 /* INSERTS */
 
 function insertIndicadoresXFocalizacionQuery($con, $id_focalizacion, $id_indicador)
@@ -667,4 +666,31 @@ function insertRegistrosQuery($con, $tipo_registro, $id_plan, $url)
     VALUES (nextval('seq_tipo_registro'), $tipo_registro, $id_plan, '$url');";
 
     return insertQuery($con, $sql);
+}
+
+function updateEstadoPlaneacionQuery($con, $estado, $id_plan)
+{
+    $sql = "UPDATE planeacion
+    SET estado = '$estado'
+    WHERE id_planeacion = $id_plan";
+
+    return insertQuery($con, $sql);
+}
+
+function getEtapaPlaneacionQuery($con, $id_plan)
+{
+    $sql = "SELECT etapa_planeacion
+    FROM registro_ubicacion
+    WHERE id_planeacion = $id_plan";
+
+    return executeQuery($con, $sql);
+}
+
+function insertGeoLocationQuery($con, $lat, $long, $fecha, $hora, $id_plan, $etapa_plan)
+{
+    $sql = "INSERT INTO public.registro_ubicacion(
+    id_registro, latitud, longitud, fecha, hora, id_planeacion, etapa_planeacion)
+    VALUES (nextval('seq_registro_ubicacion'), $lat, $long, '$fecha', '$hora', $id_plan, '$etapa_plan');";
+
+    return executeQuery($con, $sql);
 }

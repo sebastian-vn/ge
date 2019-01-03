@@ -59,6 +59,11 @@ html, body{
   margin-left: 50px;
 }
 
+.ms-parent{
+  width: 100% !important;
+  margin-bottom: 10px;
+}
+
 #accordionFiltros{
   width: 95%;
 }

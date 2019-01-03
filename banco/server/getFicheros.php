@@ -27,6 +27,6 @@ if(isset($_POST['indicador']) && $_POST['indicador'] != 0){
     $indicador = null;
 }
 
-$json = $api->getFicheros($competencia, $tema, $zona, $indicador);
+$json = $api->getFicheros($competencia, $tema);
 
 echo json_encode($json);

@@ -86,6 +86,7 @@ $("#form-recursos").submit(function(event) {
     encode: true,
     contentType: false,
     processData: false
+  
   }).done(function(data) {
     if (data.success == 0) {
       removeLoader();

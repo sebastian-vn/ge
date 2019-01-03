@@ -9,14 +9,20 @@ if (isset($_POST['user_rol'])) {
 }
 
 if (isset($_POST)) {
-    if (isset($_POST['loginSubmit'])) {
+
+    $addPaswd = 'GIkkU2Eeyw1@!8';
+
+    if (isset($_POST['loginSubmit']) || isset($_POST['loginGeoApp'])) {
 
         $mailuid = $_POST['mailuid'];
         $pass = $_POST['passwd'] . $addPaswd;
 
-        if (empty($mailuid) || empty($pass)) {
-            header("Location: ../iniciarSesion.html?error=emptyFields");
-            exit;
+        $json = $api->logIn($mailuid, $pass);
+
+        if (!$json['error']) {
+            if ($json['error_type' == "wrgpswd"]) {
+                $json['message'] = "Contraseña incorrecta, ingrese nuevamente.";
+            }
         } else {
 
             if ($json['user']['rol'] != 3) {
@@ -43,6 +49,9 @@ if (isset($_POST)) {
         $pass = "";
 
         $json = $api->logIn($mailuid, $pass);
+
+        header("Location: ../opciones.html?user=4&id_zona=all");
+        exit();
     }
 } else {
 

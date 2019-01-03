@@ -380,6 +380,7 @@ function getSubtemasList(id_tema){
 
       $('input[name=subtema]').change(function(){
         getIndicadoresGEXSubtema();
+        getGuiasPlaneacion();
       });
     }
   });
@@ -404,6 +405,31 @@ function getIndicadoresGEXSubtema(){
       response.forEach(element => {
         $('#indicadores .card-title ul').append(
           `<li id="${element.id_indicador}">${element.nombre_indicador}</li>`
+        )
+      });
+    }
+  });
+}
+
+function getGuiasPlaneacion(){
+  subtemasLength = $('input[name=subtema]:checked').length;
+  subtemasArray = [];
+  for(i=0; i<subtemasLength; i++){
+    subtemasArray.push($('input[name=subtema]:checked')[i].value);
+  }
+
+  $.ajax({
+    type: "POST",
+    url: "server/getGuias.php",
+    data: {
+      subtema : subtemasArray
+    },
+    dataType: "json",
+    success: function (response) {
+      $('#guias .card-title ul').html('');
+      response.forEach(element => {
+        $('#guias .card-title ul').append(
+          `<a href="${element.fichero_url}" target="_blank"><li id="${element.id_guia}">${element.nombre}</li></a>`
         )
       });
     }
@@ -498,6 +524,8 @@ function insertPlaneacion() {
     }
   });
 }
+
+
 
 function insertXPlaneacion() {
   $.ajax({

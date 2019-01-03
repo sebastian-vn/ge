@@ -39,62 +39,32 @@ function getRecursosQuery($con)
     return executeQuery($con, $sql);
 }
 
-function getFicherosQuery($con, $competencia, $tema, $zona, $indicador)
+function getFicherosQuery($con, $competencia, $tema)
 {
-    if ($zona == 0) {
-        $sql = "SELECT rec.recurso_url || '/' || nombre_fichero AS fichero_url, fro.nombre_fichero, rec.icon, fro.codigo, tma.temas ";
-    } else {
-        $sql = "SELECT rec.recurso_url || '/' || zna.id_zona || '/' || nombre_fichero AS fichero_url, fro.nombre_fichero, rec.icon, fro.codigo, tma.temas";
-    }
 
-    $sql .= "FROM ficheros as fro
-    JOIN competencias as cpte ON fro.id_competencia = cpte.id_competencia
-    JOIN temas as tma ON tma.id_temas = fro.id_tema
-    LEFT JOIN zonas as zna ON zna.id_zona = fro.id_zona
-    JOIN recursos rec ON rec.id_recurso = fro.id_recurso";
+    $sql = "SELECT CONCAT(rec.recurso_url,'/', nombre,'.pdf') AS fichero_url, nombre, rec.icon, tem.temas 
+    FROM guias as gui
+    JOIN subtemas stm ON stm.id_subtema = gui.id_subtema
+    JOIN temas tem ON tem.id_temas = stm.id_temas
+    JOIN comportamientos compor ON compor.id_comportamientos = tem.id_comportamiento
+    JOIN recursos rec ON rec.id_recurso = gui.id_recurso";
     /* Validar que la consulta termine en un WHERE y no en un AND */
     $is_where = true;
 
     if (!is_null($competencia)) {
         if ($is_where) {
-            $sql .= " WHERE fro.id_competencia = $competencia";
+            $sql .= " WHERE compor.id_competencia = $competencia";
             $is_where = false;
         } else {
-            $sql .= " AND fro.id_competencia = $competencia";
+            $sql .= " AND compor.id_competencia = $competencia";
         }
     }
     if (!is_null($tema)) {
         if ($is_where) {
-            $sql .= " WHERE fro.id_tema = $tema";
+            $sql .= " WHERE tem.id_tema = $tema";
             $is_where = false;
         } else {
-            $sql .= " AND fro.id_tema = $tema";
-        }
-    }
-    if (!is_null($zona)) {
-        if ($zona == 0) {
-            if ($is_where) {
-                $sql .= " WHERE fro.id_zona isnull";
-                $is_where = false;
-            } else {
-                $sql .= " AND fro.id_zona isnull";
-            }
-        } else {
-            if ($is_where) {
-                $sql .= " WHERE fro.id_zona = $zona";
-                $is_where = false;
-            } else {
-                $sql .= " AND fro.id_zona = $zona";
-            }
-        }
-    }
-
-    if (!is_null($indicador)) {
-        if ($is_where) {
-            $sql .= " WHERE id_indicador = $indicador";
-            $is_where = false;
-        } else {
-            $sql .= " AND id_indicador = $indicador";
+            $sql .= " AND tem.id_tema = $tema";
         }
     }
 
@@ -112,8 +82,9 @@ function getCompetenciasQuery($con)
 function getTemasQuery($con, $competencia)
 {
     $sql = "SELECT id_temas, temas
-    FROM temas
-    WHERE compe_por_compo_compe_id_compe = $competencia";
+    FROM temas tem
+    JOIN comportamientos compor ON compor.id_comportamientos = tem.id_comportamiento
+    WHERE compor.id_competencia = $competencia";
 
     return executeQuery($con, $sql);
 }

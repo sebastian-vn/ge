@@ -257,7 +257,7 @@ function getIndicadores() {
 /* ------------------------------------------------------------------------------------------ */
 
 /* Llama ficheros de acuerdo a los filtros y los imprime en el menú */
-function getFicheros(competencia, tema, zona, indicador) {
+function getFicheros(competencia, tema) {
   $("#area-ficheros").html(
     `<img id="codificacion-img" src="img/codificacion.PNG" alt="">`
   );
@@ -267,16 +267,14 @@ function getFicheros(competencia, tema, zona, indicador) {
     url: "server/getFicheros.php",
     data: {
       competencia: competencia,
-      tema: tema,
-      zona: zona,
-      indicador: indicador
+      tema: tema
     },
     dataType: "json",
     success: function(response) {
       response.forEach(element => {
         $("#area-ficheros").append(
           `<a class="a_download" href="#${element.fichero_url}">${
-            element.codigo
+            element.nombre
           }</a>`
         );
       });
