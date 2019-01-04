@@ -540,13 +540,13 @@ function getPlaneacionesHoy(){
             color = '#edbe00';
           }
           $('#plan_hoy').append(
-            `<div class="card text-center">
+            `<div class="card text-center cardPlanHoy">
               <div class="card-header">
-                ${element.municipio} - ${element.nombre}
+                ${element.municipio} - ${element.nombre} - ${element.zonas}
               </div>
               <div class="card-body">
                 <h5 class="card-title">${element.comportamientos} - ${element.competencia}</h5>
-                <p class="card-text">${element.nombre_estrategia} (${element.nombre_tactico}) - ${element.temas}</p>
+                <p class="card-text">${element.nombre_estrategia} (${element.nombre_tactico.string}) - ${element.temas}</p>
                 <i class="fas fa-minus-circle" style="font-size:2em; color:${color}"></i>
               </div>
               <div class="card-footer text-muted">

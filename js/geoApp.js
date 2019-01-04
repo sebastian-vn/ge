@@ -84,22 +84,8 @@ function getPlaneaciones(zona) {
             </div>`
           );
 
-          /* Switch for state of planeacion */
-          switch (element.estado) {
-            case "En Ejecución":
-              $(`#${element.id_planeacion}`).addClass('en-ejecucion');
-              $(`#${element.id_planeacion}`).html('Finalizar actividad <i class="fas fa-map-marker-alt"></i>');
-              break;
-            case "Ejecutado":
-              $(`#${element.id_planeacion}`).remove();
-              $(`#card${element.id_planeacion} .card-body`).append(
-                `<div class="alert alert-success" role="alert">
-                <i class="fas fa-check-circle" style="font-size: 2em;"></i>
-                </div>`
-              );
-              break;
+          getEtapaPlaneacion(element.id_planeacion);
 
-          }
         });
       }
     },
@@ -116,9 +102,11 @@ function getLocalizacion(id_plan) {
         type: "POST",
         url: "server/geoLocation.php",
         data: {
-          id_plan: id_plan,
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
+          geo : {
+            id_plan: id_plan,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          }
         },
         dataType: "json",
         success: function (response) {
@@ -126,7 +114,7 @@ function getLocalizacion(id_plan) {
             $(`#${id_plan}`).addClass('en-ejecucion');
             $(`#${id_plan}`).html('Finalizar actividad <i class="fas fa-map-marker-alt"></i>');
           } else if (response.etapa == "Finalizada") {
-            $(`#${id_plan}`).fadeOut();
+            $(`#${id_plan}`).remove();
             $(`#card${element.id_planeacion} .card-body`).append(
               `<div class="alert alert-success" role="alert">
               <i class="fas fa-check-circle" style="font-size: 2em;"></i>
@@ -171,4 +159,33 @@ function checkLogged() {
 function rtnBtn() {
   $('#planeaciones').addClass('hide');
   $('#zona').removeClass('hide');
+}
+
+function getEtapaPlaneacion(id_plan) {
+
+  $.ajax({
+    type: "POST",
+    url: "server/geoLocation.php",
+    data: {
+      estado: id_plan
+    },
+    dataType: "json",
+    success: function (response) {
+      /* Switch for state of planeacion */
+      switch (response.estado) {
+        case "En Ejecución":
+          $(`#${id_plan}`).addClass('en-ejecucion');
+          $(`#${id_plan}`).html('Finalizar actividad <i class="fas fa-map-marker-alt"></i>');
+          break;
+        case "Ejecutado":
+          $(`#${id_plan}`).remove();
+          $(`#card${id_plan} .card-body`).append(
+            `<div class="alert alert-success" role="alert">
+              <i class="fas fa-check-circle" style="font-size: 2em;"></i>
+            </div>`
+          );
+          break;
+      }
+    }
+  });
 }

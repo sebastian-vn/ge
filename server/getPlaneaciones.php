@@ -79,22 +79,40 @@ if(isset($_POST['geoAppPlan'])){
 
     foreach ($json as $key => $value) {
         
-        if(empty($newArray)){
-            array_push($newArray, $value);
-        }else{
-            foreach ($newArray as $keyNA => $valueNA) {
-                if(!in_array($value['id_planeacion'], $valueNA, TRUE)){
-                    $exists = false;
-                }else{
-                    $exists = true;
+        if (!isset($newArray[$value['id_planeacion']])) {
+
+            $newArray[$value['id_planeacion']] = [
+                "id_planeacion" => $value['id_planeacion'],
+                "fecha_plan" => $value['fecha_plan'],
+                "municipio" => $value['municipio'],
+                "nombre" => $value['nombre'],
+                "zonas" => $value['zonas'],
+                "nombre_entidad" => $value['nombre_entidad'],
+                "comportamientos" => $value['comportamientos'],
+                "competencia" => $value['competencia'],
+                "nombre_estrategia" => $value['nombre_estrategia'],
+                "temas" => $value['temas'],
+                "nombre_tactico" => array('array' => [], 'string' => ""),
+                "estado" => $value['estado']
+            ];
+        }
+
+        if (empty($newArray[$value['id_planeacion']]['nombre_tactico']['array'])) {
+            array_push($newArray[$value['id_planeacion']]['nombre_tactico']['array'], $value['nombre_tactico']);
+        } else {
+            foreach ($newArray[$value['id_planeacion']]['nombre_tactico']['array'] as $k => $val) {
+                if ($val != $value['nombre_tactico']) {
+                    array_push($newArray[$value['id_planeacion']]['nombre_tactico']['array'], $value['nombre_tactico']);
                 }
             }
-
-            if(!$exists) {
-                array_push($newArray, $value);
-            }
         }
+
+        /* Set implode to string variable in tacticos from array tacticos */
+        $newArray[$value['id_planeacion']]['nombre_tactico']['string'] = implode(' •• ', $newArray[$value['id_planeacion']]['nombre_tactico']['array']);
+
     }
+
+    $newArray = array_values($newArray);
 
 }
 

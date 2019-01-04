@@ -1025,6 +1025,10 @@ main {
   border: transparent;
 }
 
+.cardPlanHoy{
+  margin-bottom: 10px;   
+}
+
 .fc-toolbar button:hover {
   background-color: #218838 !important;
 }

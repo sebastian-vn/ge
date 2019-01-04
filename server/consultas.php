@@ -692,5 +692,5 @@ function insertGeoLocationQuery($con, $lat, $long, $fecha, $hora, $id_plan, $eta
     id_registro, latitud, longitud, fecha, hora, id_planeacion, etapa_planeacion)
     VALUES (nextval('seq_registro_ubicacion'), $lat, $long, '$fecha', '$hora', $id_plan, '$etapa_plan');";
 
-    return executeQuery($con, $sql);
+    return insertQuery($con, $sql);
 }
