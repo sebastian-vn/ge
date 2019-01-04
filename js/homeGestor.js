@@ -515,7 +515,7 @@ function showReturnBtn(btn) {
   }
 }
 
-function getPlaneacionesHoy(){
+function getPlaneacionesHoy() {
   $.ajax({
     type: "POST",
     url: "server/getPlaneaciones.php",
@@ -524,21 +524,31 @@ function getPlaneacionesHoy(){
     },
     dataType: "json",
     success: function (response) {
-      if(response == ""){
+      if (response == "") {
         $('#plan_hoy').html(
           `<div class="alert alert-warning" role="alert">
             No hay nada planeado para el día de hoy
           </div>`
         )
-      }else{
+      } else {
         $('#plan_hoy').html('');
         response.forEach(element => {
-          if(element.estado == 'Planeado'){
-            element.estado = 'Sin iniciar';
-            color = 'grey';
-          }else{
-            color = '#edbe00';
+
+          switch (element.estado) {
+            case 'Planeado':
+              color = 'grey';
+              icon = 'minus'
+              break;
+            case 'Iniciado':
+              color = '#edbe00';
+              icon = 'minus'
+              break;
+            case 'Finalizado':
+              color = '#269226'
+              icon = 'check'
+              break;
           }
+
           $('#plan_hoy').append(
             `<div class="card text-center cardPlanHoy">
               <div class="card-header">
@@ -547,7 +557,7 @@ function getPlaneacionesHoy(){
               <div class="card-body">
                 <h5 class="card-title">${element.comportamientos} - ${element.competencia}</h5>
                 <p class="card-text">${element.nombre_estrategia} (${element.nombre_tactico.string}) - ${element.temas}</p>
-                <i class="fas fa-minus-circle" style="font-size:2em; color:${color}"></i>
+                <i class="fas fa-${icon}-circle" style="font-size:2em; color:${color}"></i>
               </div>
               <div class="card-footer text-muted">
                 ${element.estado}

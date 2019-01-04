@@ -70,7 +70,7 @@ if (isset($_POST['detallePlaneacion'])) {
 
 }
 
-if(isset($_POST['geoAppPlan'])){
+if (isset($_POST['geoAppPlan'])) {
     $zona = $_POST['geoAppPlan'];
     $i = 0;
     $newArray = array();
@@ -78,8 +78,18 @@ if(isset($_POST['geoAppPlan'])){
     $json = $api->getPlaneacionesGeoApp($zona);
 
     foreach ($json as $key => $value) {
-        
+
         if (!isset($newArray[$value['id_planeacion']])) {
+
+            $estado = $api->getEtapaPlaneacion($value['id_planeacion']);
+
+            if (count($estado) == 0) {
+                $etapa_plan = "Planeado";
+            } else if (count($estado) == 1){
+                $etapa_plan = "Iniciado";
+            }else{
+                $etapa_plan = "Finalizado"; 
+            }
 
             $newArray[$value['id_planeacion']] = [
                 "id_planeacion" => $value['id_planeacion'],
@@ -93,7 +103,7 @@ if(isset($_POST['geoAppPlan'])){
                 "nombre_estrategia" => $value['nombre_estrategia'],
                 "temas" => $value['temas'],
                 "nombre_tactico" => array('array' => [], 'string' => ""),
-                "estado" => $value['estado']
+                "estado" => $etapa_plan
             ];
         }
 
